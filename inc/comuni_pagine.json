@@ -91,7 +91,20 @@
       "slug": "vivere-il-comune",
       "description": "Tutti gli eventi, le iniziative e i luoghi d’interesse per scoprire e vivere il territorio comunale.",
       "template_name": "Vivere il comune",
-      "children": {}
+      "children": {
+        "Eventi": {
+          "title": "Eventi",
+          "slug": "eventi",
+          "description": " ",
+          "template_name": "Eventi"
+        },
+        "Luoghi": {
+          "title": "Luoghi",
+          "slug": "luoghi",
+          "description": " ",
+          "template_name": "Luoghi"
+        }
+      }
     },
     "Argomenti": {
       "title": "Argomenti",
