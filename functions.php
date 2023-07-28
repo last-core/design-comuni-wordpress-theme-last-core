@@ -160,12 +160,8 @@ function dci_scripts()
 
     //wp_deregister_script('jquery');
 
-    //load Bootstrap Italia latest css if exists in node_modules
-    if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'node_modules/bootstrap-italia/dist/css/bootstrap-italia-comuni.min.css')) {
-        wp_enqueue_style('dci-boostrap-italia-min', get_template_directory_uri() . '/node_modules/bootstrap-italia/dist/css/bootstrap-italia-comuni.min.css');
-    } else {
-        wp_enqueue_style('dci-boostrap-italia-min', get_template_directory_uri() . '/assets/css/bootstrap-italia.min.css');
-    }
+    wp_enqueue_style('dci-boostrap-italia-min', get_template_directory_uri() . '/assets/css/bootstrap-italia.min.css');
+
     wp_enqueue_style('dci-comuni', get_template_directory_uri() . '/assets/css/comuni.css', array('dci-boostrap-italia-min'));
 
     wp_enqueue_style('dci-font', get_template_directory_uri() . '/assets/css/fonts.css', array('dci-comuni'));
@@ -284,4 +280,132 @@ function console_log($output, $msg = "log")
 function get_parent_template()
 {
     return basename(get_page_template_slug(wp_get_post_parent_id()));
+}
+
+function dci_get_children_pages($parent = '', $only_direct = true)
+{
+    $args = array(
+        'child_of' => 0
+    );
+
+    if ($parent !== '') {
+        $page = my_get_page_by_title($parent);
+        $args['child_of'] =  $page->ID;
+        if ($only_direct) {
+            $args['parent'] =  $page->ID;
+        }
+        $pages = get_pages($args);
+    } else {
+        $pages = get_pages($args); //all pages
+    }
+
+    if ($pages) {
+        foreach ($pages as $page) {
+            $result[$page->post_title] = array(
+                'title' => $page->post_title,
+                'id' => $page->ID,
+                'link' =>  get_page_link($page->ID),
+                'description' => dci_get_meta('descrizione', '_dci_page_', $page->ID),
+                'slug' =>  $page->post_name
+            );
+        }
+    }
+    return $result;
+}
+
+function my_get_page_by_title($page_title,  $output = OBJECT, $post_type = 'page')
+{
+
+    if (is_array($post_type)) {
+        $post_type           = esc_sql($post_type);
+        $post_type_in_string = "'" . implode("','", $post_type) . "'";
+    } else {
+        $post_type_in_string = $post_type;
+    }
+
+    $query = new WP_Query(
+        array(
+            'post_type'              => array($post_type_in_string),
+            'title'                  => $page_title,
+            'post_status'            => 'all',
+            'posts_per_page'         => 1,
+            'no_found_rows'          => true,
+            'ignore_sticky_posts'    => true,
+            'update_post_term_cache' => false,
+            'update_post_meta_cache' => false
+        )
+    );
+
+    if (!empty($query->post)) {
+        $page_got_by_title = $query->post;
+    } else {
+        $page_got_by_title = null;
+    }
+    return $page_got_by_title;
+}
+
+/**
+ * ritaglia una immagine ad una certa dimensione
+ * usata in persona-pubblica.php
+ */
+function ritagliaImmagine($immagine, $dimensione)
+{
+    $info_immagine = pathinfo($immagine);
+    $percorso = parse_url($immagine);
+    $percorso = substr($percorso["path"], 0, -strlen($info_immagine["basename"]));
+    $nome_file_originale = $info_immagine["basename"];
+    $nome_file_modificato = 'miniatura-' . $nome_file_originale;
+    $dimensioni = getimagesize($immagine);
+    if ($dimensioni["0"] > $dimensioni["1"]) { // Orizzontale
+        $altezza = $dimensione;
+        $ratio = $dimensioni[1] / $altezza;
+        $larghezza = round($dimensioni[0] / $ratio);
+    } else if ($dimensioni["0"] < $dimensioni["1"]) { // Verticale
+        $larghezza = $dimensione;
+        $ratio = $dimensioni[0] / $larghezza;
+        $altezza = round($dimensioni[1] / $ratio);
+    } else if ($dimensioni["0"] == $dimensioni["1"]) { // Quadrato
+        $larghezza = $dimensione;
+        $altezza = $dimensione;
+    }
+    $destinazione = imagecreatetruecolor($larghezza, $altezza);
+    if ($dimensioni["mime"] == 'image/jpeg') {
+        $sorgente = imagecreatefromjpeg($_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_originale);
+        imagecopyresized($destinazione, $sorgente, 0, 0, 0, 0, $larghezza, $altezza, $dimensioni["0"], $dimensioni["1"]);
+        imagejpeg($destinazione, $_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_modificato);
+        $sorgente = imagecreatefromjpeg($_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_modificato);
+        $img_crop = imagecrop($sorgente, ['x' => 0, 'y' => 0, 'width' => $dimensione, 'height' => $dimensione]);
+        imagejpeg($img_crop, $_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_modificato);
+    } else if ($dimensioni["mime"] == 'image/png') {
+        $sorgente = imagecreatefrompng($_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_originale);
+        imagecopyresized($destinazione, $sorgente, 0, 0, 0, 0, $larghezza, $altezza, $dimensioni["0"], $dimensioni["1"]);
+        imagepng($destinazione, $_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_modificato);
+        $sorgente = imagecreatefrompng($_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_modificato);
+        $img_crop = imagecrop($sorgente, ['x' => 0, 'y' => 0, 'width' => $dimensione, 'height' => $dimensione]);
+        imagepng($img_crop, $_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_modificato);
+    } else if ($dimensioni["mime"] == 'image/gif') {
+        $sorgente = imagecreatefromgif($_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_originale);
+        imagecopyresized($destinazione, $sorgente, 0, 0, 0, 0, $larghezza, $altezza, $dimensioni["0"], $dimensioni["1"]);
+        imagegif($destinazione, $_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_modificato);
+        $sorgente = imagecreatefromgif($_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_modificato);
+        $img_crop = imagecrop($sorgente, ['x' => 0, 'y' => 0, 'width' => $dimensione, 'height' => $dimensione]);
+        imagegif($img_crop, $_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_modificato);
+    }
+    return $percorso . $nome_file_modificato;
+}
+
+/**
+ * restituisce le dimensioni (formattate) di un allegato di cui si passa la url
+ * funziona solo per file locali
+ */
+function getFileSize(string $url)
+{
+    $info_file = pathinfo($url);
+    $percorso = parse_url($url);
+    $percorso = substr($percorso["path"], 0, -strlen($info_file["basename"]));
+    $nome_file_originale = $info_file["basename"];
+    $bytes = filesize($_SERVER["DOCUMENT_ROOT"] . $percorso . $nome_file_originale);
+    $base = log($bytes, 1024);
+    $suffixes = array('', 'Kb', 'Mb', 'Gb', 'Tb');
+    return strtoupper($info_file["extension"]) . " " . round(pow(1024, $base - floor($base)), 2) . ' ' . $suffixes[floor($base)];
 }
