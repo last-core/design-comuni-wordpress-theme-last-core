@@ -103,6 +103,12 @@ function load_more()
 			if ($load_card_type == "evento") {
 				$out .= load_template_part("template-parts/evento/card-full");
 			}
+			if ($load_card_type == "amministrazione-sub") {
+				$out .= load_template_part("template-parts/amministrazione/card");
+			}
+			if ($load_card_type == "persona-pubblica") {
+				$out .= load_template_part("template-parts/persona-pubblica/card");
+			}
 
 		endwhile;
 
