@@ -19,6 +19,7 @@ get_header();
     ?>
         <?php get_template_part("template-parts/hero/hero"); ?>
         <?php get_template_part("template-parts/luogo/tutti-luoghi"); ?>
+        <?php get_template_part("template-parts/luogo/argomenti"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
         <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
     <?php

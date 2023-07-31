@@ -11,6 +11,12 @@ switch ($obj->taxonomy) {
 	case "tipi_luogo":
 		get_template_part("archive-tipi_luogo");
 		break;
+	case "tipi_evento":
+		get_template_part("archive-tipi_evento");
+		break;
+	case "tipi_notizia":
+		get_template_part("archive-tipi_notizia");
+		break;
 	default:
 		get_template_part("archive");
 		break;
