@@ -9,7 +9,7 @@
  * Developer : Andrea bersi
  */
 
-global $immagini;
+global $immagini, $with_border;
 
 get_header();
 /**
@@ -63,7 +63,7 @@ $ulteriori_informazioni =  dci_get_wysiwyg_field("ulteriori_informazioni", $pref
                                 </div>
 
                                 <!-- quale data element?? -->
-                                <p class="subtitle-small mb-3" data-element="luogo-description">
+                                <p class="subtitle-small mb-3" data-element="persona-description">
                                     <?php echo $descrizione_breve ?>
                                 </p>
 
@@ -77,12 +77,7 @@ $ulteriori_informazioni =  dci_get_wysiwyg_field("ulteriori_informazioni", $pref
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <?php get_template_part('template-parts/single/foto-large'); ?>
-                    <hr class="d-none d-lg-block mt-2" />
-                </div>
+                <hr class="d-none d-lg-block mt-2" />
             </div>
             <div class="container">
                 <div class="row row-column-menu-left pb-lg-80 pb-40">
