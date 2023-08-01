@@ -5,7 +5,7 @@
  *
  * @package Design_Comuni_Italia
  */
-global $post, $with_shadow;
+global $post, $with_shadow, $data_element;
 $search_url = esc_url(home_url('/'));
 
 get_header();
@@ -16,6 +16,7 @@ get_header();
         the_post();
 
         $with_shadow = true;
+        $data_element = 'data-element="page-name"'
     ?>
         <?php get_template_part("template-parts/hero/hero"); ?>
         <?php get_template_part("template-parts/luogo/tutti-luoghi"); ?>
