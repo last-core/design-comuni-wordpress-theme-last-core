@@ -398,7 +398,7 @@ class Breadcrumb_Trail
 						break;
 					case 'Eventi':
 						$this->items[] =  "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";
-						$this->items[] =  "<a href='" . home_url("vivere-il-comune/eventi") . "'>" . __("Luoghi", "design_comuni_italia") . "</a>";
+						$this->items[] =  "<a href='" . home_url("vivere-il-comune/eventi") . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
 						$this->items[] = get_the_title();
 						return;
 						break;
@@ -460,6 +460,11 @@ class Breadcrumb_Trail
 					} else if (is_tax(array("tipi_luogo"))) {
 						$this->items[] =  "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";
 						$this->items[] = "<a href='" . home_url("vivere-il-comune/luoghi") . "'>" . __("Luoghi", "design_comuni_italia") . "</a>";
+						$this->add_term_archive_items();
+						array_splice($this->items, 3, 1);
+					} else if (is_tax(array("tipi_evento"))) {
+						$this->items[] =  "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";
+						$this->items[] = "<a href='" . home_url("vivere-il-comune/eventi") . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
 						$this->add_term_archive_items();
 						array_splice($this->items, 3, 1);
 					} else {
