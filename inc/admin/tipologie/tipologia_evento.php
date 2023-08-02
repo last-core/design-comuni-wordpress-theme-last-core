@@ -100,16 +100,22 @@ function dci_add_eventi_metaboxes()
 
     $cmb_apertura->add_field(array(
         'id' => $prefix . 'data_orario_inizio',
-        'name'    => __('Data e orario di inizio', 'design_comuni_italia'),
+        'name'    => __('Data e orario di inizio *', 'design_comuni_italia'),
         'type'    => 'text_datetime_timestamp',
         'date_format' => 'd-m-Y',
+        'attributes' => array(
+            'required' => 'required'
+        )
     ));
 
     $cmb_apertura->add_field(array(
         'id' => $prefix . 'data_orario_fine',
-        'name'    => __('Data e orario di fine', 'design_comuni_italia'),
+        'name'    => __('Data e orario di fine *', 'design_comuni_italia'),
         'type'    => 'text_datetime_timestamp',
         'date_format' => 'd-m-Y',
+        'attributes' => array(
+            'required' => 'required'
+        )
     ));
 
     $cmb_apertura->add_field(array(
@@ -252,10 +258,13 @@ function dci_add_eventi_metaboxes()
     //LUOGO
     $cmb_luogo = new_cmb2_box(array(
         'id'           => $prefix . 'box_luogo',
-        'title'        => __('Luogo dell\'evento', 'design_comuni_italia'),
+        'title'        => __('Luogo dell\'evento *', 'design_comuni_italia'),
         'object_types' => array('evento'),
         'context'      => 'normal',
         'priority'     => 'high',
+        'attributes' => array(
+            'required' => 'required'
+        )
     ));
 
     $cmb_luogo->add_field(array(
@@ -284,7 +293,7 @@ function dci_add_eventi_metaboxes()
         'id'          => $prefix . 'costi',
         'type'        => 'group',
         'options'     => array(
-            'group_title'    => __('Costo {#}', 'design_comuni_italia'), // {#} gets replaced by row number
+            'group_title'    => __('Costo {#} *', 'design_comuni_italia'), // {#} gets replaced by row number
             'add_button'     => __('Aggiungi un costo', 'design_comuni_italia'),
             'remove_button'  => __('Rimuovi il costo', 'design_comuni_italia'),
             'sortable'       => true,
@@ -292,10 +301,13 @@ function dci_add_eventi_metaboxes()
     ));
 
     $cmb_costi->add_group_field($group_field_id, array(
-        'name'       => __('Titolo', 'design_comuni_italia'),
+        'name'       => __('Titolo *', 'design_comuni_italia'),
         'description' => __('Es: il tipo di biglietto ("Intero","Ridotto"...)', 'design_comuni_italia'),
         'id'         => 'titolo_costo',
         'type'       => 'text',
+        'attributes' => array(
+            'required' => 'required'
+        )
     ));
 
     $cmb_costi->add_group_field($group_field_id, array(

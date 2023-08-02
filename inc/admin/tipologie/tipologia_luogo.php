@@ -122,7 +122,7 @@ function dci_add_luogo_metaboxes()
 
     $cmb_apertura->add_field(
         array(
-            'name'       => __('Immagine', 'design_comuni_italia'),
+            'name'       => __('Immagine *', 'design_comuni_italia'),
             'desc' => __('Immagine principale del luogo *', 'design_comuni_italia'),
             'id'             => $prefix . 'immagine',
             'type' => 'file',
