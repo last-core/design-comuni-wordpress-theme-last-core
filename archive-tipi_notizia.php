@@ -56,7 +56,7 @@ get_header();
                         <div id="load-more" class="row g-4">
                             <?php foreach ($posts as $post) {
                                 $load_card_type = "notizia";
-                                get_template_part("template-parts/notizia/card");
+                                get_template_part("template-parts/novita/cards-list");
                             } ?>
                         </div>
                         <?php get_template_part("template-parts/search/more-results"); ?>
