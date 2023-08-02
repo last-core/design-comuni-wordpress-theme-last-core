@@ -1,10 +1,11 @@
 {
-  "name": "design-comuni-wordpress-theme",
-  "version": "1.7.2",
-  "description": "Tema Wordpress dei Comuni Italiani",
+  "name": "design-comuni-wordpress-theme-last-core",
+  "version": "0.1.0",
+  "description": "Tema Wordpress dei Comuni Italiani - branch autonomo",
   "main": "index.js",
   "scripts": {
     "build": "./copy_assets.sh && npm run minify:css && npm run minify:js",
+    "build:caraffa": "./copy_assets.sh && ./caraffa_style.sh && npm run minify:css && npm run minify:js",
     "version": "node scripts/config-sync && git add style.css && git add README.md",
     "postversion": "echo \"You can now publish your tag with 'git push --follow-tags'\"",
     "minify:css": "node scripts/minify-css.js",
@@ -12,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/italia/design-comuni-wordpress-theme.git"
+    "url": "git+https://github.com/last-core/design-comuni-wordpress-theme.git"
   },
   "author": "Presidenza del Consiglio dei Ministri",
   "license": "AGPL-3.0",
