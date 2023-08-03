@@ -5,16 +5,13 @@
  *
  * @package Design_Comuni_Italia
  */
-global $obj, $title, $description, $data_element, $the_query, $load_posts, $load_card_type, $additional_filter;
+global $obj, $title, $description, $data_element, $the_query, $additional_filter;
 $obj = get_queried_object();
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
-$load_posts = 3;
-$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $politico = get_posts(array('fields' => 'ids', 'posts_per_page' => -1, 'post_type' => 'incarico', 'tipi_incarico' => 'politico'));
 $amministrativo = get_posts(array('fields' => 'ids', 'posts_per_page' => -1, 'post_type' => 'incarico', 'tipi_incarico' => 'amministrativo'));
 $tipi_incarico = array('politici' => $politico, 'personale-amministrativo' => $amministrativo);
 $args = array(
-    'posts_per_page' => $max_posts,
+    'posts_per_page' => -1,
     'post_type'      => 'persona_pubblica',
     'meta_query' => array(
         'relation' => 'OR'
