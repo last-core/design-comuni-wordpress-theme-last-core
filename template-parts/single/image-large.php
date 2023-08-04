@@ -8,13 +8,7 @@ if ($img_url) {
 ?>
 
     <div class="container-fluid my-3">
-        <div class="row" style="
-    height: clamp(150px, 10rem, 50vh);
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    overflow: hidden;
-    ">
+        <div class="row">
             <figure class="figure px-0 img-full">
                 <img src="<?php echo $img_url; ?>" class="figure-img img-fluid" alt="<?php echo $image_alt; ?>" />
                 <?php if ($img->post_excerpt) { ?>
