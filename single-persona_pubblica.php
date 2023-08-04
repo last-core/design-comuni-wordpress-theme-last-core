@@ -25,7 +25,18 @@ $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
 $incarichi = dci_get_meta("incarichi", $prefix, $post->ID);
 $organizzazioni = dci_get_meta("organizzazioni", $prefix, $post->ID);
 $responsabile_di = dci_get_meta("responsabile_di", $prefix, $post->ID);
-$data_conclusione_incarico = strftime("%d %B %Y", DateTime::createFromFormat('d-m-Y', dci_get_meta("data_conclusione_incarico", $prefix, $post->ID)));
+$data_conclusione_incarico = dci_get_meta("data_conclusione_incarico", $prefix, $post->ID);
+if ($data_conclusione_incarico !== '') {
+    $fmt = datefmt_create(
+        'it_IT',
+        IntlDateFormatter::FULL,
+        IntlDateFormatter::FULL,
+        'Europe/Rome',
+        IntlDateFormatter::GREGORIAN,
+        'd MMMM Y'
+    );
+    $data_conclusione_incarico = datefmt_format($fmt, DateTime::createFromFormat('d-m-Y', $data_conclusione_incarico));
+}
 $competenze = dci_get_wysiwyg_field("competenze", $prefix, $post->ID);
 $deleghe = dci_get_wysiwyg_field("deleghe", $prefix, $post->ID);
 $biografia = dci_get_wysiwyg_field("biografia", $prefix, $post->ID);
