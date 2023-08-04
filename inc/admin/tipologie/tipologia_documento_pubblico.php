@@ -175,21 +175,36 @@ function dci_add_documento_pubblico_metaboxes()
     //DOCUMENTO
     $cmb_documento = new_cmb2_box(array(
         'id' => $prefix . 'box_documento',
-        'title' => __('Documento *', 'design_comuni_italia'),
+        'title' => __('Documenti *', 'design_comuni_italia'),
         'object_types' => array('documento_pubblico'),
         'context' => 'normal',
         'priority' => 'high',
     ));
 
-    $cmb_documento->add_field(array(
-        'id' => $prefix . 'url_documento',
+    $documenti_group_id = $cmb_documento->add_field(array(
+        'id' => $prefix . 'documenti_group',
+        'desc' => __('Documenti', 'design_comuni_italia'),
+        'type' => 'group',
+        'repeatable' => true,
+        'options' => array(
+            'group_title' => __('Documento {#}', 'design_comuni_italia'),
+            'add_button' => __('Aggiungi documento', 'design_comuni_italia'),
+            'remove_button' => __('Rimuovi documento', 'design_comuni_italia'),
+            'sortable' => true,
+            'closed' => false,
+            'remove_confirm' => esc_html__('Conferma per rimuovere il documento', 'design_comuni_italia'),
+        )
+    ));
+
+    $cmb_documento->add_group_field($documenti_group_id, array(
+        'id' => 'url_documento',
         'name' => __('Documento: URL', 'design_comuni_italia'),
         'desc' => __('Link al documento vero e proprio', 'design_comuni_italia'),
         'type' => 'text_url'
     ));
 
-    $cmb_documento->add_field(array(
-        'id' => $prefix . 'file_documento',
+    $cmb_documento->add_group_field($documenti_group_id, array(
+        'id' => 'file_documento',
         'name' => __('Documento: Carica file', 'design_comuni_italia'),
         'desc' => __('Se non è presente un link a risorsa esterna, bisogna ricordarsi di allegare il documento vero e proprio, in un formato scaricabile e stampabile da parte dell\'utente', 'design_comuni_italia'),
         'type' => 'file',
@@ -198,7 +213,7 @@ function dci_add_documento_pubblico_metaboxes()
         // Optional, override default text strings
         'text' => array(
             'add_upload_files_text' => __('Aggiungi un nuovo allegato', 'design_comuni_italia'), // default: "Add or Upload Files"
-            'remove_image_text' => __('Rimuovi allegato', 'design_comuni_italia'), // default: "Remove Image"
+            'remove_ image_text' => __('Rimuovi allegato', 'design_comuni_italia'), // default: "Remove Image"
             'remove_text' => __('Rimuovi', 'design_comuni_italia'), // default: "Remove"
         ),
     ));

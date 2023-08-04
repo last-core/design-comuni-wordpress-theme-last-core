@@ -17,9 +17,10 @@ jQuery( document ).ready(function() {
             dci_remove_highlight_missing_field('.cmb2-id--dci-documento-pubblico-tipo-doc-albo-pretorio');
         });
     });
-
-    jQuery("body").on('click', "#_dci_documento_pubblico_box_documento", function() {
-        dci_remove_highlight_alternative_field('#_dci_documento_pubblico_box_documento');
+    jQuery('[id^="cmb-group-_dci_documento_pubblico_documenti_group-"]').each((e,d) => {
+        jQuery("body").on('click', "#" + d.id, function() {
+            dci_remove_highlight_alternative_field("#" + d.id);
+        });
     });
 
     /**
@@ -46,17 +47,28 @@ jQuery( document ).ready(function() {
         /**
          * controllo compilazione alternativa url documento - file documento
          */
-        if(document.activeElement.id === 'publish' &&(!jQuery('input[name^="_dci_documento_pubblico_url_documento"]').val() && jQuery('#_dci_documento_pubblico_file_documento-status').children().length == 0 && !jQuery('input[name^="_dci_documento_pubblico_file_documento"]').val())){
-            dci_highlight_alternative_field('#_dci_documento_pubblico_box_documento', 'Campo obbligatorio');
-            return false;
-        }
-
-        if(document.activeElement.id === 'publish' && (jQuery('input[name^="_dci_documento_pubblico_url_documento"]').val() && (jQuery('#_dci_documento_pubblico_file_documento-status').children().length != 0 || jQuery('input[name^="_dci_documento_pubblico_file_documento"]').val()))){
-            dci_highlight_alternative_field('#_dci_documento_pubblico_box_documento','Inserire alternativamente un URL o un allegato');
-            return false;
-        }
-
-        return true;
+        let res = true;
+        jQuery('[id^="cmb-group-_dci_documento_pubblico_documenti_group-"]').each((e,d) => {
+            if(document.activeElement.id === 'publish' &&(!jQuery('#'+ d.id + ' input[name^="_dci_documento_pubblico_documenti_group[' + e.toString() + '][url_documento]"]').val() && jQuery('#_dci_documento_pubblico_documenti_group_' + e.toString() + '_file_documento-status').children().length == 0 && !jQuery('#'+ d.id + ' input[name^="_dci_documento_pubblico_documenti_group[' + e.toString() + '][file_documento]"]').val())){
+                dci_highlight_alternative_field('#' + d.id + '[data-iterator="' + e.toString() + '"]', 'Campo obbligatorio');
+                res = false;
+                setTimeout(() => {
+                    dci_remove_highlight_alternative_field('#' + d.id + '[data-iterator="' + e.toString() + '"]');
+                }, 5000);
+                return;
+            }
+    
+            if(document.activeElement.id === 'publish' && (jQuery('#'+ d.id + ' input[name^="_dci_documento_pubblico_documenti_group[' + e.toString() + '][url_documento]"]').val() && (jQuery('#_dci_documento_pubblico_documenti_group_' + e.toString() + '_file_documento-status').children().length != 0 || jQuery('#'+ d.id + ' input[name^="_dci_documento_pubblico_documenti_group[' + e.toString() + '][file_documento]"]').val()))){
+                dci_highlight_alternative_field('#' + d.id + '[data-iterator="' + e.toString() + '"]','Inserire alternativamente un URL o un allegato');
+                res = false;
+                setTimeout(() => {
+                    dci_remove_highlight_alternative_field('#' + d.id + '[data-iterator="' + e.toString() + '"]');
+                }, 5000);
+                return;
+            }
+        });
+        
+        return res;
     });
 
 
