@@ -375,6 +375,32 @@ class Breadcrumb_Trail
 					return;
 				}
 
+				if (get_post_type() == 'luogo') {
+					$this->items[] =  "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";
+					$this->items[] =  "<a href='" . home_url("vivere-il-comune/luoghi") . "'>" . __("Luoghi", "design_comuni_italia") . "</a>";
+					$terms = get_the_terms(get_the_ID(), 'tipi_luogo');
+					if ($terms) {
+						foreach ($terms as $term) {
+							$this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_luogo')), $term->name);
+						}
+					}
+					$this->items[] = get_the_title();
+					return;
+				}
+
+				if (get_post_type() == 'evento') {
+					$this->items[] =  "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";
+					$this->items[] =  "<a href='" . home_url("vivere-il-comune/eventi") . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
+					$terms = get_the_terms(get_the_ID(), 'tipi_evento');
+					if ($terms) {
+						foreach ($terms as $term) {
+							$this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_evento')), $term->name);
+						}
+					}
+					$this->items[] = get_the_title();
+					return;
+				}
+
 				if (get_post_type() == 'documento_pubblico') {
 					$this->items[] =  "<a href='" . home_url("documento_pubblico") . "'>" . __("Documenti pubblici", "design_comuni_italia") . "</a>";
 					$terms = get_the_terms(get_the_ID(), 'tipi_documento');
