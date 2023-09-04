@@ -350,7 +350,15 @@ function dci_save_appuntamento()
 
     if (array_key_exists("office", $params) && $params['office'] != "null") {
         $office_obj = json_decode(stripslashes($params['office']), true);
-        //$office_id = $office_obj['id'];
+        $office_id = $office_obj['id'];
+        $contatti_id = dci_get_meta("contatti", '_dci_unita_organizzativa_', $office_id);
+        if (is_array($contatti_id) && count($contatti_id)) {
+            $contatti = dci_get_meta("voci", "_dci_punto_contatto_", $contatti_id[0]);
+            $ufficio_email = array_filter($contatti, fn ($contatto) => $contatto['_dci_punto_contatto_tipo_punto_contatto'] === 'email');
+            if (is_array($ufficio_email) && count($ufficio_email)) {
+                $ufficio_email = $ufficio_email[0]['_dci_punto_contatto_valore'];
+            }
+        }
         update_post_meta($postId, '_dci_appuntamento_unita_organizzativa', $office_obj['name']);
     }
 
@@ -359,10 +367,52 @@ function dci_save_appuntamento()
         $appointment_obj = json_decode(stripslashes($params['appointment']), true);
         $startDate = $appointment_obj['startDate'];
         $endDate = $appointment_obj['endDate'];
-
+        $startDateObj = DateTime::createFromFormat('Y-m-d\\TH:i', $startDate);
+        $endDateObj = DateTime::createFromFormat('Y-m-d\\TH:i', $endDate);
+        $startDateF = $startDateObj->format('d/m/Y H:i');
+        $endDateF = $endDateObj->format('d/m/Y H:i');
         update_post_meta($postId, '_dci_appuntamento_data_ora_inizio_appuntamento',  $startDate);
         update_post_meta($postId, '_dci_appuntamento_data_ora_fine_appuntamento',  $endDate);
     }
+
+    $email_assistenza = dci_get_option('email_assistenza', 'assistenza');
+    $body_user = "Gentile {$params['surname']} {$params['name']} la sua richiesta di appuntamento è stata correttamente inviata.";
+    $body_admin = "Gentile gestore, è stata inoltrata una nuova richiesta di appuntamento, di seguente i dati: <br>";
+    $body_admin .= "<ul>";
+    $labels = array(
+        'name' => 'Nome',
+        'surname' => 'Cognome',
+        'email' => 'Email',
+        'service' => 'Servizio',
+        'office' => 'Ufficio',
+        'appointment' => 'Appuntamento',
+        'moreDetails' => 'Dettagli'
+    );
+    foreach ($params as $key => $value) {
+        switch ($key) {
+            case 'action':
+            case 'privacyChecked':
+            case 'place':
+                break;
+            case 'service':
+                $body_admin .= "<li><strong>{$labels[$key]}:</strong> {$service_obj['name']}</li>";
+                break;
+            case 'office':
+                $body_admin .= "<li><strong>{$labels[$key]}:</strong> {$office_obj['name']}</li>";
+                break;
+            case 'appointment':
+                $body_admin .= "<li>Appuntamento:</li><ul><li><strong>Inizio:</strong>{$startDateF}</li><li><strong>Fine:</strong>{$endDateF}</li></ul>";
+                break;
+            default:
+                $body_admin .= "<li><strong>{$labels[$key]}:</strong> {$value}</li>";
+                break;
+        }
+    }
+    $body_admin .= "</ul>";
+    $headers = array('Content-Type: text/html; charset=UTF-8');
+
+    wp_mail($params['email'], "Ricevuta richiesta appuntamento per {$service_obj['name']} il {$startDateF}", $body_user, $headers);
+    wp_mail($ufficio_email ? $ufficio_email : $email_assistenza, "Nuova richiesta appuntamento per {$service_obj['name']} il {$startDateF}", $body_admin, $headers);
 
     echo json_encode(array(
         "success" => true,
