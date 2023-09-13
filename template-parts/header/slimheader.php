@@ -10,8 +10,8 @@
                 <span class="visually-hidden">Lingua attiva:</span>
                 <span>ITA</span>
                 <svg class="icon">
-                    <use href="#it-expand"></use>
-                  </svg>
+                  <use href="#it-expand"></use>
+                </svg>
               </button>
               <div class="dropdown-menu">
                 <div class="row">
@@ -35,12 +35,16 @@
               </div>
             </div>
             <?php
-                if(!is_user_logged_in()) {
-                    get_template_part("template-parts/header/header-anon");
-                }else{
-                    get_template_part("template-parts/header/header-logged");
-                }
-              ?>
+
+            $area_riservata_hide = dci_get_option("area_riservata_hide", "header");
+            if (!$area_riservata_hide) {
+              if (!is_user_logged_in()) {
+                get_template_part("template-parts/header/header-anon");
+              } else {
+                get_template_part("template-parts/header/header-logged");
+              }
+            }
+            ?>
           </div>
         </div>
       </div>
