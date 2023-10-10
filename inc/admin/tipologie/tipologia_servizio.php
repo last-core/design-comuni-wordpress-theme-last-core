@@ -101,6 +101,7 @@ function dci_add_servizi_metaboxes()
         'object_types' => array('servizio'),
         'context'      => 'normal',
         'priority'     => 'high',
+        'show_in_rest' => WP_REST_Server::READABLE,
     ));
 
     $cmb_apertura->add_field(array(
@@ -535,12 +536,11 @@ function dci_add_servizi_metaboxes()
 
     $cmb_contatti->add_field(array(
         'id' => $prefix . 'unita_responsabile',
-        'name'    => __('Unità Organizzativa responsabile * ', 'design_comuni_italia'),
+        'name'    => __('Unità Organizzativa responsabile', 'design_comuni_italia'),
         'desc' => __('Link dell\'ufficio resposanbile dell\'erogazione di questo Servizio', 'design_comuni_italia'),
         'type'    => 'pw_select',
         'options' => dci_get_posts_options('unita_organizzativa'),
         'attributes' => array(
-            'required' => 'required',
             'placeholder' =>  __('Seleziona le Unità Organizzative', 'design_comuni_italia'),
         )
     ));
