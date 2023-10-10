@@ -104,8 +104,7 @@ function dci_add_persona_pubblica_metaboxes()
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('incarico'),
         'attributes' => array(
-            'placeholder' =>  __('Seleziona gli Incarichi', 'design_comuni_italia'),
-            'required' => 'required'
+            'placeholder' =>  __('Seleziona gli Incarichi', 'design_comuni_italia')
         )
     ));
 
