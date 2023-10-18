@@ -110,13 +110,12 @@ function dci_add_persona_pubblica_metaboxes()
 
     $cmb_user->add_field(array(
         'id' => $prefix . 'organizzazioni',
-        'name'    => __('Organizzazione *'),
+        'name'    => __('Organizzazione'),
         'desc' => __('Le organizzazioni di cui fa parte (es. Consiglio Comunale; es. Sistemi informativi)', 'design_comuni_italia'),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('unita_organizzativa'),
         'attributes' => array(
-            'placeholder' =>  __('Seleziona le Unità Organizzative', 'design_comuni_italia'),
-            'required' => 'required'
+            'placeholder' =>  __('Seleziona le Unità Organizzative', 'design_comuni_italia')
         )
     ));
 
