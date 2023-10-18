@@ -18,6 +18,32 @@ for ($i = 0; $i < 12; $i++) {
 
     <!-- Step 1 -->
     <section class="firstStep page-step active it-page-section" data-steps="1">
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 col-lg-8 px-40 px-lg-80">
+                <p class="text-paragraph mb-lg-4">
+                    <?php
+                    echo $nome_comune; ?> gestisce i dati personali forniti e liberamente comunicati sulla base dell’articolo 13
+                    del Regolamento (UE) 2016/679 General data protection regulation (Gdpr) e degli articoli 13 e successive
+                    modifiche e integrazione del decreto legislativo (di seguito d.lgs) 267/2000 (Testo unico enti locali).
+                </p>
+                <p class="text-paragraph mb-0">
+                    Per i dettagli sul trattamento dei dati personali consulta l’
+                    <a href="<?php echo get_privacy_policy_url(); ?>" class="t-primary">informativa sulla privacy.</a>
+                </p>
+
+                <div class="form-check mt-4 mb-3 mt-md-40 mb-lg-40">
+                    <div class="checkbox-body d-flex align-items-center">
+                        <input type="checkbox" id="privacy" name="privacy" value="1" required>
+                        <label class="title-small-semi-bold pt-1" for="privacy">Ho letto e compreso l’informativa sulla
+                            privacy</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step 1 -->
+    <section class="d-none page-step it-page-section" data-steps="2">
         <div class="cmp-card mb-40" id="office">
             <div class="card has-bkg-grey shadow-sm p-big">
                 <div class="card-header border-0 p-0 mb-lg-30">
@@ -52,7 +78,7 @@ for ($i = 0; $i < 12; $i++) {
     </section>
 
     <!-- Step 2 -->
-    <section class="d-none page-step it-page-section" data-steps="2">
+    <section class="d-none page-step it-page-section" data-steps="3">
         <div class="cmp-card mb-40" id="appointment-available">
             <div class="card has-bkg-grey shadow-sm p-big">
                 <div class="card-header border-0 p-0 mb-lg-30">
@@ -81,7 +107,7 @@ for ($i = 0; $i < 12; $i++) {
                             <div class="card-body p-0">
                                 <div class="form-check m-0">
                                     <fieldset id="radio-appointment">
-                                        Nessunn appuntamento disponibile.
+                                        Nessun appuntamento disponibile.
                                     </fieldset>
                                 </div>
                             </div>
@@ -104,7 +130,7 @@ for ($i = 0; $i < 12; $i++) {
     </section>
 
     <!-- Step 3 -->
-    <section class="d-none page-step it-page-section" data-steps="3">
+    <section class="d-none page-step it-page-section" data-steps="4">
         <div class="cmp-card mb-40" id="reason">
             <div class="card has-bkg-grey shadow-sm p-big">
                 <div class="card-header border-0 p-0 mb-lg-30 mb-3">
@@ -156,7 +182,7 @@ for ($i = 0; $i < 12; $i++) {
     </section>
 
     <!-- Step 4 -->
-    <section class="d-none page-step it-page-section" data-steps="4">
+    <section class="d-none page-step it-page-section" data-steps="5">
         <p class="subtitle-small pb-40 mb-0 d-lg-none">
             Hai un’identità digitale SPID o CIE?
             <a class="title-small-semi-bold t-primary underline" href="./iscrizione-graduatoria-accedere-servizio.html">
@@ -216,7 +242,7 @@ for ($i = 0; $i < 12; $i++) {
     </section>
 
     <!-- Step 5 -->
-    <section class="d-none page-step it-page-section" data-steps="5">
+    <section class="d-none page-step it-page-section" data-steps="6">
         <div class="mt-2">
             <h2 class="visually-hidden">Dettagli dell'appuntamento</h2>
             <div class="cmp-card mb-4">
@@ -233,7 +259,7 @@ for ($i = 0; $i < 12; $i++) {
                                     <h4 class="title-large-semi-bold mb-3">
                                         Ufficio
                                     </h4>
-                                    <a href="#" class="text-decoration-none" title="Modifica Ufficio" aria-label="Modifica Ufficio">
+                                    <a href="#" class="text-decoration-none" title="Modifica Ufficio" aria-label="Modifica Ufficio" onclick="goBackTo(4)">
                                         <span class="text-button-sm-semi t-primary">
                                             Modifica
                                         </span>
@@ -267,7 +293,7 @@ for ($i = 0; $i < 12; $i++) {
                                     <h4 class="title-large-semi-bold mb-3">
                                         Data e orario
                                     </h4>
-                                    <a href="#" class="text-decoration-none" title="Modifica Data e orario" aria-label="Modifica Data e orario">
+                                    <a href="#" class="text-decoration-none" title="Modifica Data e orario" aria-label="Modifica Data e orario" onclick="goBackTo(3)">
                                         <span class="text-button-sm-semi t-primary">
                                             Modifica
                                         </span>
@@ -297,7 +323,7 @@ for ($i = 0; $i < 12; $i++) {
                                     <h4 class="title-large-semi-bold mb-3">
                                         Dettagli appuntamento
                                     </h4>
-                                    <a href="#" class="text-decoration-none" title="Modifica Dettagli appuntamento" aria-label="Modifica Dettagli appuntamento">
+                                    <a href="#" class="text-decoration-none" title="Modifica Dettagli appuntamento" aria-label="Modifica Dettagli appuntamento" onclick="goBackTo(2)">
                                         <span class="text-button-sm-semi t-primary">
                                             Modifica
                                         </span>
@@ -327,7 +353,7 @@ for ($i = 0; $i < 12; $i++) {
                                     <h4 class="title-large-semi-bold mb-3">
                                         Richiedente
                                     </h4>
-                                    <a href="#" class="text-decoration-none" title="Modifica Richiedente" aria-label="Modifica Richiedente">
+                                    <a href="#" class="text-decoration-none" title="Modifica Richiedente" aria-label="Modifica Richiedente" onclick="goBackTo(1)">
                                         <span class="text-button-sm-semi t-primary">
                                             Modifica
                                         </span>

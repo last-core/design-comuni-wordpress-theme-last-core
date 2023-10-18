@@ -169,6 +169,13 @@ const saveAnswerById = (key, id, callback) => {
   checkMandatoryFields();
 };
 
+/* Privacy - Step 0 */
+const privacy = document.getElementById("privacy");
+privacy.addEventListener("change", () => {
+    checkMandatoryFields();
+    saveAnswerByValue("privacy", privacy.checked);
+})
+
 /* Get Luoghi by Unità organizzativa - Step 1 */
 const officeSelect = document.getElementById("office-choice");
 officeSelect.addEventListener("change", () => {
@@ -406,21 +413,26 @@ const setReviews = () => {
 const checkMandatoryFields = () => {
   switch (currentStep) {
     case 1:
-      if (answers?.office && answers?.place) btnNext.disabled = false;
+      if (privacy.checked) btnNext.disabled = false;
       else btnNext.disabled = true;
       break;
 
     case 2:
-      if (answers?.appointment) btnNext.disabled = false;
+      if (answers?.office && answers?.place) btnNext.disabled = false;
       else btnNext.disabled = true;
       break;
 
     case 3:
-      if (answers?.service && answers?.moreDetails) btnNext.disabled = false;
+      if (answers?.appointment) btnNext.disabled = false;
       else btnNext.disabled = true;
       break;
 
     case 4:
+      if (answers?.service && answers?.moreDetails) btnNext.disabled = false;
+      else btnNext.disabled = true;
+      break;
+
+    case 5:
       if (answers?.name && answers?.surname && answers?.email)
         btnNext.disabled = false;
       else btnNext.disabled = true;
@@ -525,5 +537,15 @@ async function getServiceDetail(id) {
     return res;
   } catch (e) {
     console.error(e);
+  }
+}
+
+function goBackTo(i){
+  if(isNaN){
+    return;
+  }
+  while(i > 0){
+    backPrevious();
+    i--;
   }
 }

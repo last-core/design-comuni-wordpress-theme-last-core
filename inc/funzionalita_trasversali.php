@@ -311,7 +311,7 @@ function dci_save_appuntamento()
     date_default_timezone_set('Europe/Rome');
     $data = date('Y-m-d\TH:i:s');
 
-    if (array_key_exists("name", $params) && array_key_exists("email", $params) &&  array_key_exists("surname", $params) && array_key_exists("moreDetails", $params) && array_key_exists("service", $params)  && array_key_exists("office", $params)) {
+    if (array_key_exists("name", $params) && array_key_exists("privacy", $params) && array_key_exists("email", $params) &&  array_key_exists("surname", $params) && array_key_exists("moreDetails", $params) && array_key_exists("service", $params)  && array_key_exists("office", $params)) {
 
         $appuntamento_title = $params['surname'] . ' ' . $params['name'] . '';
 
@@ -391,7 +391,7 @@ function dci_save_appuntamento()
     foreach ($params as $key => $value) {
         switch ($key) {
             case 'action':
-            case 'privacyChecked':
+            case 'privacy':
             case 'place':
                 break;
             case 'service':
