@@ -288,8 +288,7 @@ $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
                                 <section id="allegati" class="it-page-section mb-4">
                                     <h3 class="my-2 title-large-semi-bold">Allegati</h3>
                                     <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                                        <?php foreach ($allegati as $all_url) {
-                                            $all_id = attachment_url_to_postid($all_url);
+                                        <?php foreach ($allegati as $all_id) {
                                             $allegato = get_post($all_id);
                                         ?>
                                             <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
