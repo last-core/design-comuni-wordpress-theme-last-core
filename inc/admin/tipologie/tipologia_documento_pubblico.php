@@ -24,7 +24,7 @@ function dci_register_post_type_documento_pubblico()
         'public'        => true,
         'menu_position' => 5,
         'menu_icon'     => 'dashicons-portfolio',
-        'has_archive'   => true,
+        'has_archive'   => false,
         'capability_type' => array('documento_pubblico', 'documenti_pubblici'),
         'map_meta_cap'    => true,
         'description'    => __("Struttura delle informazioni relative utili a presentare un documento pubblico", 'design_comuni_italia'),
