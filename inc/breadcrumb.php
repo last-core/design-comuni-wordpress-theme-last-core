@@ -434,7 +434,6 @@ class Breadcrumb_Trail
 					$this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 					$terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
 					if ($terms) {
-						var_dump($terms);
 						foreach ($terms as $term) {
 							switch ($term->slug) {
 								case 'ufficio':
