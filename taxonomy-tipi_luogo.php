@@ -17,6 +17,10 @@ $the_query = new WP_Query($args);
 
 $posts = $the_query->posts;
 
+$additional_filter = array(
+    'tipi_luogo' => $obj->slug
+);
+
 // Per selezionare i contenuti in evidenza tramite flag
 
 //Per selezionare i contenuti in evidenza tramite configurazione

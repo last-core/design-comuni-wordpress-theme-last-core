@@ -15,6 +15,9 @@ $args = array(
 );
 $the_query = new WP_Query($args);
 
+$additional_filter = array(
+    'tipi_documento' => $obj->slug
+);
 $posts = $the_query->posts;
 
 // Per selezionare i contenuti in evidenza tramite flag
