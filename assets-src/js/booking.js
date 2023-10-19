@@ -541,7 +541,7 @@ async function getServiceDetail(id) {
 }
 
 function goBackTo(i){
-  if(isNaN){
+  if(isNaN(i)){
     return;
   }
   while(i > 0){
