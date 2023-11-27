@@ -282,37 +282,6 @@ function get_parent_template()
     return basename(get_page_template_slug(wp_get_post_parent_id()));
 }
 
-function dci_get_children_pages($parent = '', $only_direct = true)
-{
-    $args = array(
-        'child_of' => 0
-    );
-
-    if ($parent !== '') {
-        $page = my_get_page_by_title($parent);
-        $args['child_of'] =  $page->ID;
-        if ($only_direct) {
-            $args['parent'] =  $page->ID;
-        }
-        $pages = get_pages($args);
-    } else {
-        $pages = get_pages($args); //all pages
-    }
-
-    if ($pages) {
-        foreach ($pages as $page) {
-            $result[$page->post_title] = array(
-                'title' => $page->post_title,
-                'id' => $page->ID,
-                'link' =>  get_page_link($page->ID),
-                'description' => dci_get_meta('descrizione', '_dci_page_', $page->ID),
-                'slug' =>  $page->post_name
-            );
-        }
-    }
-    return $result;
-}
-
 function my_get_page_by_title($page_title,  $output = OBJECT, $post_type = 'page')
 {
 
