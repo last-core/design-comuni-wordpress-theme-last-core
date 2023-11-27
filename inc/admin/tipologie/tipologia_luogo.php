@@ -28,6 +28,7 @@ function dci_register_post_type_luogo()
         'has_archive'           => false,    //archive page
         'capability_type' => array('luogo', 'luoghi'),
         'map_meta_cap'    => true,
+        'show_in_rest' => WP_REST_Server::READABLE
     );
     register_post_type('luogo', $args);
 
@@ -76,6 +77,7 @@ function dci_add_luogo_metaboxes()
         'object_types' => array('luogo'),
         'context' => 'side',
         'priority' => 'high',
+        'show_in_rest' => WP_REST_Server::READABLE
     ));
 
     $cmb_tipo_luogo->add_field(array(
@@ -369,6 +371,7 @@ function dci_add_luogo_metaboxes()
         'object_types' => array('luogo'),
         'context'      => 'normal',
         'priority'     => 'high',
+        'show_in_rest' => WP_REST_Server::READABLE
     ));
 
     $cmb_orari->add_field(array(
