@@ -129,6 +129,149 @@ function dci_get_servizi_ufficio(WP_REST_Request $request)
     return $servizi;
 }
 
+function dci_register_prenotazioni_date_route()
+{
+    register_rest_route('wp/v2', '/prenotazioni/date/', array(
+        'methods' => 'GET',
+        'callback' => 'dci_get_prenotazioni_date'
+    ));
+}
+add_action('rest_api_init', 'dci_register_prenotazioni_date_route');
+
+/**
+ * restituisce i servizi che sono disponibili presso l'Unità Organizzativa passata come parametro (id o title)
+ * @param WP_REST_Request $request
+ * @return array[]
+ */
+function dci_get_prenotazioni_date(WP_REST_Request $request)
+{
+
+    $params = $_GET;
+    if (array_key_exists('month', $params)) {
+        $month  = $params['month'];
+    }
+    if (array_key_exists('office', $params)) {
+        $office_id = $params['office'];
+    }
+
+    if (!isset($month) || $month == '' || !isset($office_id) || $office_id == '') {
+        return array(
+            "error" => array(
+                "code" =>  400,
+                "message" => "Oops, qualcosa è andato storto!"
+            )
+        );
+    }
+    $giorni_apertura = dci_get_meta("giorni_apertura", '_dci_unita_organizzativa_', $office_id);
+    $giorni_apertura = is_array($giorni_apertura) ? $giorni_apertura : [];
+    $giorni_chiusura = dci_get_meta("giorni_chiusura", '_dci_unita_organizzativa_', $office_id);
+    $giorni_chiusura = is_array($giorni_chiusura) ? array_map(function ($a) {
+        return $a['giorno_chiusura'];
+    }, $giorni_chiusura) : [];
+    $cur_month = date('m');
+    $start_date = $cur_month == $month ? date('d') : '01';
+
+    if ($cur_month <= $month) {
+        $year = intval(date('Y'));
+    } else {
+        $year = intval(date('Y')) + 1;
+    }
+
+    $end_date = date('t', strtotime($year . '-' . $month . '-' . $start_date));
+
+    $dates =
+        new DatePeriod(
+            new DateTime($year . '-' . $month . '-' . $start_date),
+            new DateInterval('P1D'),
+            new DateTime($year . '-' . $month . '-' . $end_date)
+        );
+    $res = array();
+    foreach ($dates as $date) {
+        if (!in_array($date->format('N'), $giorni_apertura)) continue;
+        if (in_array($date->format('d-m-Y'), $giorni_chiusura)) continue;
+        $res[] = $date->format('Y-m-d');
+    }
+
+    return $res;
+}
+function dci_register_prenotazioni_orari_route()
+{
+    register_rest_route('wp/v2', '/prenotazioni/orari/', array(
+        'methods' => 'GET',
+        'callback' => 'dci_get_prenotazioni_orari'
+    ));
+}
+add_action('rest_api_init', 'dci_register_prenotazioni_orari_route');
+
+/**
+ * restituisce i servizi che sono disponibili presso l'Unità Organizzativa passata come parametro (id o title)
+ * @param WP_REST_Request $request
+ * @return array[]
+ */
+function dci_get_prenotazioni_orari(WP_REST_Request $request)
+{
+
+    $params = $_GET;
+    if (array_key_exists('date', $params)) {
+        $date  = $params['date'];
+    }
+    if (array_key_exists('office', $params)) {
+        $office_id = $params['office'];
+    }
+
+    if (!isset($date) || $date == '' || !isset($office_id) || $office_id == '') {
+        return array(
+            "error" => array(
+                "code" =>  400,
+                "message" => "Oops, qualcosa è andato storto!"
+            )
+        );
+    }
+    $orari_apertura_mattina = dci_get_meta("orari_apertura_mattina", '_dci_unita_organizzativa_', $office_id);
+    $orari_chiusura_mattina = dci_get_meta("orari_chiusura_mattina", '_dci_unita_organizzativa_', $office_id);
+    $orari_apertura_pomeriggio = dci_get_meta("orari_apertura_pomeriggio", '_dci_unita_organizzativa_', $office_id);
+    $orari_chiusura_pomeriggio = dci_get_meta("orari_chiusura_pomeriggio", '_dci_unita_organizzativa_', $office_id);
+    $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id);
+
+    $args = array('numberposts' => -1, 'post_status' => 'any', 'post_type' => 'appuntamento', 'meta_query' => array(
+        array('key' => '_dci_appuntamento_unita_organizzativa_id', 'value' => $office_id),
+        array('key' => '_dci_appuntamento_data_ora_inizio_appuntamento', 'value' =>  $date, 'compare' => 'LIKE')
+    ));
+    $prenotazioni = get_posts($args);
+    $prenotazioni_selected = [];
+    foreach ($prenotazioni as &$prenotazione) {
+        $prenotazione = dci_get_meta("data_ora_inizio_appuntamento", '_dci_appuntamento_', $prenotazione->ID);
+        $prenotazioni_selected[$prenotazione] = isset($prenotazioni_selected[$prenotazione]) ? $prenotazioni_selected[$prenotazione] + 1 : 1;
+    }
+
+    $dates =
+        new DatePeriod(
+            new DateTime($date . 'T' . $orari_apertura_mattina . ':00'),
+            new DateInterval('PT30M'),
+            new DateTime($date . 'T' . $orari_chiusura_mattina . ':01'),
+        );
+    $datesP =  new DatePeriod(
+        new DateTime($date . 'T' . $orari_apertura_pomeriggio . ':00'),
+        new DateInterval('PT30M'),
+        new DateTime($date . 'T' . $orari_chiusura_pomeriggio . ':01'),
+    );
+    $res = array();
+    $dates = array_merge(iterator_to_array($dates), iterator_to_array($datesP));
+    $count = count($dates);
+    foreach ($dates as $i => $date) {
+        $d = $date->format('Y-m-d\TH:i');
+        if (isset($res[$i - 1])) {
+            $res[$i - 1]['end_time'] = $d;
+        }
+        if (isset($prenotazioni_selected[$d]) && $prenotazioni_selected[$d] >= $max_per_appuntamento) continue;
+        if ($count - 2 >= $i) {
+            $res[$i] = array('start_time' => $d);
+        }
+    }
+
+    return array_slice($res, 0);
+}
+
 
 /**
  * enqueue script dci-rating
@@ -322,13 +465,13 @@ function dci_save_appuntamento()
     }
 
     if ($postId == 0) {
-        echo json_encode(array(
+        wp_send_json_error(array(
             "success" => false,
             "error" => array(
-                "code" =>  400,
-                "message" => "Oops, qualcosa è andato storto!"
-            )
-        ));
+                "message" => "Oops, qualcosa è andato storto!",
+            ),
+
+        ), 400);
         wp_die();
     }
 
@@ -360,6 +503,7 @@ function dci_save_appuntamento()
             }
         }
         update_post_meta($postId, '_dci_appuntamento_unita_organizzativa', $office_obj['name']);
+        update_post_meta($postId, '_dci_appuntamento_unita_organizzativa_id', $office_id);
     }
 
     if (array_key_exists("appointment", $params) && $params['appointment'] != "null") {

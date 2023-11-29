@@ -102,17 +102,15 @@ for ($i = 0; $i < 12; $i++) {
                             } ?>
                         </select>
                     </div>
-                    <div class="cmp-card-radio-list mt-4">
-                        <div class="card p-3">
-                            <div class="card-body p-0">
-                                <div class="form-check m-0">
-                                    <fieldset id="radio-appointment">
-                                        Nessun appuntamento disponibile.
-                                    </fieldset>
-                                </div>
+                    <fieldset id="date-appointment-div">
+                    </fieldset>
+                    <fieldset id="hour-appointment-div">
+                        <div class="card-body p-0">
+                            <div class="form-check m-0">
+                                Nessun appuntamento disponibile.
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
                 </div>
             </div>
         </div>

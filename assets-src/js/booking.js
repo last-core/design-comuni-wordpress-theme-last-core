@@ -155,7 +155,6 @@ const encodeObject = (obj) => encodeURIComponent(JSON.stringify(obj));
 const decodeObj = (str) => JSON.parse(decodeURIComponent(str));
 
 const saveAnswerByValue = (key, value, toBeDecoded = false) => {
-  if (key == "office") for (k in answers) delete answers[k];
   if (toBeDecoded) {
     const newValue = decodeObj(value);
     answers[key] = newValue;
@@ -173,7 +172,7 @@ const saveAnswerById = (key, id, callback) => {
 const privacy = document.getElementById("privacy");
 privacy.addEventListener("change", () => {
     checkMandatoryFields();
-    saveAnswerByValue("privacy", privacy.checked);
+    saveAnswerByValue("privacy", privacy.checked, true);
 })
 
 /* Get Luoghi by Unità organizzativa - Step 1 */
@@ -190,6 +189,7 @@ officeSelect.addEventListener("change", () => {
       .then((data) => {
         document.querySelector("#place-cards-wrapper").innerHTML =
           '<legend class="visually-hidden">Seleziona un ufficio</legend>';
+        
         for (const place of data) {
           const reducedPlace = {
             nome: place.post_title,
@@ -270,7 +270,7 @@ appointment.addEventListener("change", () => {
   checkMandatoryFields();
 
   // modificare l'url se si vuole integrare con un servizio esterno
-  fetch(url + `?month=${appointment?.value}&office=${answers?.place?.id}`)
+  fetch(`${window.wpRestApi}wp/v2/prenotazioni/date` + `?month=${appointment?.value}&office=${answers?.office?.id}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("HTTP error " + response.status);
@@ -278,37 +278,85 @@ appointment.addEventListener("change", () => {
       return response.json();
     })
     .then((data) => {
-      data = data[appointment?.value]
-      document.querySelector("#radio-appointment").innerHTML =
-        '<legend class="visually-hidden">Seleziona un giorno e orario</legend>';
-      for (const dates of data) {
-        const { startDate, endDate } = dates;
-        const startDay = startDate.split("T")[0];
-        const startDayStr = new Date(startDay).toLocaleString([], {
+      if(data.error){
+        return;
+      }
+        document.querySelector("#date-appointment-div").innerHTML =
+        `<div class="select-wrapper p-0 mt-1 select-partials">
+                        <label for="appointment-date" class="visually-hidden">
+                            Seleziona un giorno
+                        </label>
+                        <select id="appointment-date" class="">
+                            <option selected="selected" value="">
+                                Seleziona un giorno
+                            </option>
+                        </select></div>`;
+      for (const date of data) {
+        const dateStr = new Date(date).toLocaleString([], {
           weekday: "long",
-          day: "2-digit",
+          day: "numeric",
           month: "long",
-          year: "numeric",
+          year: "numeric"
         });
-        const id = startDate + "/" + endDate;
-        const value = encodeObject({ startDate, endDate });
+        document.querySelector("#appointment-date").innerHTML += `
+        <option value="${date}">
+        ${dateStr}
+        </option>
+        `;
+      }
+      const appointmentDate = document.getElementById("appointment-date");
+      if(appointmentDate) appointmentDate.addEventListener("change", onDateChange);
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+});
 
-        document.querySelector("#radio-appointment").innerHTML += `
-        <div
-        class="radio-body border-bottom border-light"
-        >
-        <input name="radio" type="radio" id="${id}" onclick="saveAnswerByValue('appointment', '${value}', true)"/>
-        <label for="${id}" class="text-capitalize">${startDayStr} ore ${
-          startDate.split("T")[1]
-        }</label>
-        </div>
+const onDateChange = (_date) => {
+  const date = _date.target.value;
+  fetch('/wp-json/wp/v2/prenotazioni/orari' + `?date=${date}&office=${answers?.office?.id}`)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("HTTP error " + response.status);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    if(typeof data !== 'object' || data.length === 0 || data.error){
+      return;
+    }
+            document.querySelector("#hour-appointment-div").innerHTML =
+        `<div class="select-wrapper p-0 mt-1 select-partials">
+                        <label for="appointment-time" class="visually-hidden">
+                            Seleziona un orario
+                        </label>
+                        <select id="appointment-time" class="" onchange="saveAnswerByValue('appointment', this.value, true)">
+                            <option selected="selected" value="">
+                                Seleziona un orario
+                            </option>
+                            </select></div>`;
+      for (const time of data) {
+        const { start_time, end_time } = time;
+        const startTimeStr = new Date(start_time).toLocaleString([], {
+          hour: "numeric",
+          minute: "numeric"
+        });
+        const endTimeStr = new Date(end_time).toLocaleString([], {
+          hour: "numeric",
+          minute: "numeric"
+        });
+        const value = encodeObject({startDate: `${start_time}`, endDate: `${end_time}`});
+        document.querySelector("#appointment-time").innerHTML += `
+        <option value="${value}">
+        ${startTimeStr} - ${endTimeStr}
+        </option>
         `;
       }
     })
     .catch((err) => {
       console.log("err", err);
     });
-});
+  }
 
 /* Get selected office */
 const setSelectedPlace = () => {

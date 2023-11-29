@@ -182,7 +182,6 @@ function dci_add_unita_organizzativa_metaboxes()
         )
     ));
 
-
     //PERSONE
     $cmb_persone = new_cmb2_box(array(
         'id'           => $prefix . 'box_persone',
@@ -221,6 +220,111 @@ function dci_add_unita_organizzativa_metaboxes()
         'attributes' => array(
             'placeholder' =>  __('Seleziona i Servizi', 'design_comuni_italia'),
         )
+    ));
+
+    $cmb_orari = new_cmb2_box(array(
+        'id'           => $prefix . 'box_orari',
+        'title'        => __('Orari aperti al pubblico', 'design_comuni_italia'),
+        'object_types' => array('unita_organizzativa'),
+        'context'      => 'normal',
+        'priority'     => 'high',
+    ));
+
+    $cmb_orari->add_field(array(
+        'id'      => $prefix . 'giorni_apertura',
+        'name'    => 'Giorni settimanali aperti al pubblico',
+        'desc'    => 'Giorni settimanali aperti al pubblico',
+        'type'    => 'multicheck',
+        'options' => array(
+            '1' => 'Lunedì',
+            '2' => 'Martedì',
+            '3' => 'Mercoledì',
+            '4' => 'Giovedì',
+            '5' => 'Venerdì',
+            '6' => 'Sabato',
+            '7' => 'Domenica'
+        ),
+    ));
+
+    $cmb_orari->add_field(array(
+        'id'      => $prefix . 'orari_apertura_mattina',
+        'name'    => 'Orario di apertura mattutino al pubblico',
+        'desc'    => 'Orario di apertura mattutino al pubblico',
+        'type' => 'text_time',
+        'attributes' => array(
+            'data-timepicker' => json_encode(array(
+                'timeFormat' => 'HH:mm',
+            )),
+        ),
+        'time_format' => 'H:i',
+    ));
+    $cmb_orari->add_field(array(
+        'id'      => $prefix . 'orari_chiusura_mattina',
+        'name'    => 'Orario di chiusura mattutino al pubblico',
+        'desc'    => 'Orario di chiusura mattutino al pubblico',
+        'type' => 'text_time',
+        'attributes' => array(
+            'data-timepicker' => json_encode(array(
+                'timeFormat' => 'HH:mm',
+            )),
+        ),
+        'time_format' => 'H:i',
+    ));
+    $cmb_orari->add_field(array(
+        'id'      => $prefix . 'orari_apertura_pomeriggio',
+        'name'    => 'Orario di apertura pomeridiano al pubblico',
+        'desc'    => 'Orario di apertura pomeridiano al pubblico',
+        'type' => 'text_time',
+        'attributes' => array(
+            'data-timepicker' => json_encode(array(
+                'timeFormat' => 'HH:mm',
+            )),
+        ),
+        'time_format' => 'H:i',
+    ));
+    $cmb_orari->add_field(array(
+        'id'      => $prefix . 'orari_chiusura_pomeriggio',
+        'name'    => 'Orario di chiusura pomeridiano al pubblico',
+        'desc'    => 'Orario di chiusura pomeridiano al pubblico',
+        'type' => 'text_time',
+        'attributes' => array(
+            'data-timepicker' => json_encode(array(
+                'timeFormat' => 'HH:mm',
+            )),
+        ),
+        'time_format' => 'H:i',
+    ));
+    $cmb_orari->add_field(array(
+        'id'      => $prefix . 'max_per_appuntamento',
+        'name'    => 'Massimo prenotazioni per appuntamento',
+        'desc'    => 'Imposta il limite massimo di prenotazioni per appuntamento',
+        'type' => 'text_small',
+        'attributes' => array(
+            'placeholder' => '5',
+            'type' => 'number',
+            'min' => '1'
+        ),
+    ));
+    $giorni_chiusura_group = $cmb_orari->add_field(array(
+        'id'          => $prefix . 'giorni_chiusura',
+        'type'        => 'group',
+        'description' => __('Giorni di chiusura, verranno esclusi dalle date selezionabili', 'design_comuni_italia'),
+        'options'     => array(
+            'group_title'       => __('Giorno {#}', 'design_comuni_italia'), // since version 1.1.4, {#} gets replaced by row number
+            'add_button'        => __('Aggiungi giorno di chiusura', 'design_comuni_italia'),
+            'remove_button'     => __('Rimuovi giorno di chiusura', 'design_comuni_italia'),
+            'sortable'          => true,
+            // 'closed'         => true, // true to have the groups closed by default
+            // 'remove_confirm' => esc_html__( 'Are you sure you want to remove?', 'cmb2' ), // Performs confirmation before removing group.
+        ),
+    ));
+
+    // Id's for group's fields only need to be unique for the group. Prefix is not needed.
+    $cmb_orari->add_group_field($giorni_chiusura_group, array(
+        'name' => 'Giorno chiusura',
+        'id'   => 'giorno_chiusura',
+        'type'    => 'text_date',
+        'date_format' => 'd-m-Y',
     ));
 
     //CONTATTI
