@@ -548,9 +548,10 @@ const confirmAppointment = () => {
     },
     body,
   })
-    .then((response) => {
+    .then(async (response) => {
       if (!response.ok) {
-        throw new Error("HTTP error " + response.status);
+
+        throw ({...await response.json()});
       }
       return response.json();
     })
@@ -562,7 +563,30 @@ const confirmAppointment = () => {
       if (mainContainer) mainContainer.scrollIntoView({ behavior: "smooth" });
     })
     .catch((err) => {
-      console.log("err", err);
+      switch(err?.data?.code){
+        case 1: 
+        const errAlert = document.getElementById('error-alert');
+        if(!errAlert){
+          return;
+        }
+          errAlert.classList.remove('d-none');
+          errAlert.textContent = err?.data?.message;
+          const selected = document.querySelector("#appointment-time")?.selectedIndex;
+          document.querySelectorAll("#appointment-time option")?.[selected].remove();
+          delete answers.appointment;
+          checkMandatoryFields();
+          document.getElementById('error-alert')?.scrollIntoView({ behavior: "smooth" });
+          document.querySelector("#appointment-time")?.addEventListener("change", (e) => {
+            if(e?.target?.value && !document.getElementById('error-alert')?.classList.contains("d-none")){
+              document.getElementById('error-alert')?.classList.add('d-none');
+            }
+          })
+          goBackTo(3);
+        break;
+        default:
+        console.log("err", err);
+      break;
+      }
     });
 };
 

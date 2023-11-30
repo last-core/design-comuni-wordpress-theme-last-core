@@ -1,4 +1,6 @@
 <div class="container">
+    <div id="error-alert" class="alert alert-danger d-none" role="alert">
+    </div>
     <div class="cmp-info-progress d-flex d-none" data-progress="1">
         <!-- Desktop -->
         <div class="info-progress-wrapper d-none d-lg-flex w-100 px-3 flex-column justify-content-end step-active">

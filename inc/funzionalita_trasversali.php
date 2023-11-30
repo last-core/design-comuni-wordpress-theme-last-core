@@ -454,7 +454,32 @@ function dci_save_appuntamento()
     date_default_timezone_set('Europe/Rome');
     $data = date('Y-m-d\TH:i:s');
 
-    if (array_key_exists("name", $params) && array_key_exists("privacy", $params) && array_key_exists("email", $params) &&  array_key_exists("surname", $params) && array_key_exists("moreDetails", $params) && array_key_exists("service", $params)  && array_key_exists("office", $params)) {
+    if (array_key_exists("name", $params) && array_key_exists("privacy", $params) && array_key_exists("email", $params) &&  array_key_exists("surname", $params) && array_key_exists("moreDetails", $params) && array_key_exists("service", $params)  && array_key_exists("office", $params) && $params['office'] != "null" && array_key_exists("appointment", $params)) {
+        $office_obj = json_decode(stripslashes($params['office']), true);
+        $office_id = $office_obj['id'];
+        $appointment_obj = json_decode(stripslashes($params['appointment']), true);
+        $startDate = $appointment_obj['startDate'];
+        $endDate = $appointment_obj['endDate'];
+
+        $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id);
+
+        $args = array('numberposts' => -1, 'post_status' => 'any', 'post_type' => 'appuntamento', 'meta_query' => array(
+            array('key' => '_dci_appuntamento_unita_organizzativa_id', 'value' => $office_id),
+            array('key' => '_dci_appuntamento_data_ora_inizio_appuntamento', 'value' =>  $startDate, 'compare' => 'LIKE')
+        ));
+        $prenotazioni = get_posts($args);
+        $current = 0;
+        foreach ($prenotazioni as $prenotazione) {
+            $current += 1;
+        }
+        if ($current >= $max_per_appuntamento) {
+            wp_send_json_error(array(
+                "message" => "L'orario che hai selezionato è stato già prenotato da qualcun'altro, si prega di scegliere un altro orario",
+                "code" => 1,
+            ), 400);
+            wp_die();
+            return;
+        }
 
         $appuntamento_title = $params['surname'] . ' ' . $params['name'] . '';
 
@@ -508,9 +533,6 @@ function dci_save_appuntamento()
 
     if (array_key_exists("appointment", $params) && $params['appointment'] != "null") {
 
-        $appointment_obj = json_decode(stripslashes($params['appointment']), true);
-        $startDate = $appointment_obj['startDate'];
-        $endDate = $appointment_obj['endDate'];
         $startDateObj = DateTime::createFromFormat('Y-m-d\\TH:i', $startDate);
         $endDateObj = DateTime::createFromFormat('Y-m-d\\TH:i', $endDate);
         $startDateF = $startDateObj->format('d/m/Y H:i');
