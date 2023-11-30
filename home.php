@@ -7,7 +7,8 @@
  *
  * @package Design_Comuni_Italia
  */
-
+$colore = dci_get_option("colore_tema");
+$colore = $colore === 1 || !$colore ? '' : $colore;
 get_header();
 ?>
 <main id="main-container" class="main-container redbrown">
@@ -26,7 +27,7 @@ get_header();
         <?php get_template_part("template-parts/home/calendario"); ?>
     </section>
     <section id="evidenza" class="evidence-section">
-        <div class="section py-5 pb-lg-80 px-lg-5 position-relative" style="<?php if (file_exists(get_stylesheet_directory() . '/assets/img/evidenza-header.webp')) { ?>background-image: url('<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/img/evidenza-header.webp');<?php } else { ?>background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/evidenza-header.webp');<?php } ?>">
+        <div class="section py-5 pb-lg-80 px-lg-5 position-relative" style="<?php if (file_exists(get_stylesheet_directory() . '/assets/img/evidenza-header' . $colore . '.webp')) { ?>background-image: url('<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/img/evidenza-header<?php echo $colore; ?>.webp');<?php } else { ?>background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/img/evidenza-header<?php echo $colore; ?>.webp');<?php } ?>">
             <?php get_template_part("template-parts/home/argomenti"); ?>
             <?php get_template_part("template-parts/home/siti", "tematici"); ?>
         </div>

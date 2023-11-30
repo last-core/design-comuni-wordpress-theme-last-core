@@ -160,9 +160,28 @@ function dci_scripts()
 
     //wp_deregister_script('jquery');
 
-    wp_enqueue_style('dci-boostrap-italia-min', get_template_directory_uri() . '/assets/css/bootstrap-italia.min.css');
-
-    wp_enqueue_style('dci-comuni', get_template_directory_uri() . '/assets/css/comuni.css', array('dci-boostrap-italia-min'));
+    switch (dci_get_option("colore_tema")) {
+        case 2:
+            wp_enqueue_style('dci-boostrap-italia-min', get_template_directory_uri() . '/assets/css/bootstrap-italia2.min.css');
+            wp_enqueue_style('dci-comuni', get_template_directory_uri() . '/assets/css/comuni2.css', array('dci-boostrap-italia-min'));
+            break;
+        case 3:
+            wp_enqueue_style('dci-boostrap-italia-min', get_template_directory_uri() . '/assets/css/bootstrap-italia3.min.css');
+            wp_enqueue_style('dci-comuni', get_template_directory_uri() . '/assets/css/comuni3.css', array('dci-boostrap-italia-min'));
+            break;
+        case 4:
+            wp_enqueue_style('dci-boostrap-italia-min', get_template_directory_uri() . '/assets/css/bootstrap-italia4.min.css');
+            wp_enqueue_style('dci-comuni', get_template_directory_uri() . '/assets/css/comuni4.css', array('dci-boostrap-italia-min'));
+            break;
+        case 5:
+            wp_enqueue_style('dci-boostrap-italia-min', get_template_directory_uri() . '/assets/css/bootstrap-italia5.min.css');
+            wp_enqueue_style('dci-comuni', get_template_directory_uri() . '/assets/css/comuni5.css', array('dci-boostrap-italia-min'));
+            break;
+        default:
+            wp_enqueue_style('dci-boostrap-italia-min', get_template_directory_uri() . '/assets/css/bootstrap-italia.min.css');
+            wp_enqueue_style('dci-comuni', get_template_directory_uri() . '/assets/css/comuni.css', array('dci-boostrap-italia-min'));
+            break;
+    }
 
     wp_enqueue_style('dci-font', get_template_directory_uri() . '/assets/css/fonts.css', array('dci-comuni'));
     wp_enqueue_style('dci-wp-style', get_template_directory_uri() . "/style.css", array('dci-comuni'));
