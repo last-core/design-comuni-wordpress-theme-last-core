@@ -56,7 +56,7 @@ get_header();
                                 </div>
                             </div>
                             <p id="autocomplete-label" class="mb-4">
-                                <strong><?php echo $the_query->found_posts; ?> </strong>Notizie trovate in ordine alfabetico
+                                <strong><?php echo $the_query->found_posts; ?> </strong>Notizie trovate in ordine cronologico
                             </p>
                         </div>
                         <div id="load-more" class="row g-4">
