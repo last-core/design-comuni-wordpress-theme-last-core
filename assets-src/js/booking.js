@@ -171,8 +171,8 @@ const saveAnswerById = (key, id, callback) => {
 /* Privacy - Step 0 */
 const privacy = document.getElementById("privacy");
 privacy.addEventListener("change", () => {
-    checkMandatoryFields();
-    saveAnswerByValue("privacy", privacy.checked, true);
+  checkMandatoryFields();
+  saveAnswerByValue("privacy", privacy.checked, true);
 })
 
 /* Get Luoghi by Unità organizzativa - Step 1 */
@@ -189,7 +189,7 @@ officeSelect.addEventListener("change", () => {
       .then((data) => {
         document.querySelector("#place-cards-wrapper").innerHTML =
           '<legend class="visually-hidden">Seleziona un ufficio</legend>';
-        
+
         for (const place of data) {
           const reducedPlace = {
             nome: place.post_title,
@@ -209,7 +209,7 @@ officeSelect.addEventListener("change", () => {
                     id=${place?.ID}
                     value='${JSON.stringify(reducedPlace)}'
                     onclick="saveAnswerById('place', ${place?.ID}, ${() =>
-            setSelectedPlace()})"
+              setSelectedPlace()})"
                     />
                     <label for=${place?.ID}>
                     <h3 class="big-title mb-0 pb-0">
@@ -278,10 +278,10 @@ appointment.addEventListener("change", () => {
       return response.json();
     })
     .then((data) => {
-      if(data.error){
+      if (data.error) {
         return;
       }
-        document.querySelector("#date-appointment-div").innerHTML =
+      document.querySelector("#date-appointment-div").innerHTML =
         `<div class="select-wrapper p-0 mt-1 select-partials">
                         <label for="appointment-date" class="visually-hidden">
                             Seleziona un giorno
@@ -305,7 +305,7 @@ appointment.addEventListener("change", () => {
         `;
       }
       const appointmentDate = document.getElementById("appointment-date");
-      if(appointmentDate) appointmentDate.addEventListener("change", onDateChange);
+      if (appointmentDate) appointmentDate.addEventListener("change", onDateChange);
     })
     .catch((err) => {
       console.log("err", err);
@@ -315,17 +315,17 @@ appointment.addEventListener("change", () => {
 const onDateChange = (_date) => {
   const date = _date.target.value;
   fetch('/wp-json/wp/v2/prenotazioni/orari' + `?date=${date}&office=${answers?.office?.id}`)
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error("HTTP error " + response.status);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    if(typeof data !== 'object' || data.length === 0 || data.error){
-      return;
-    }
-            document.querySelector("#hour-appointment-div").innerHTML =
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("HTTP error " + response.status);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (typeof data !== 'object' || data.length === 0 || data.error) {
+        return;
+      }
+      document.querySelector("#hour-appointment-div").innerHTML =
         `<div class="select-wrapper p-0 mt-1 select-partials">
                         <label for="appointment-time" class="visually-hidden">
                             Seleziona un orario
@@ -345,7 +345,7 @@ const onDateChange = (_date) => {
           hour: "numeric",
           minute: "numeric"
         });
-        const value = encodeObject({startDate: `${start_time}`, endDate: `${end_time}`});
+        const value = encodeObject({ startDate: `${start_time}`, endDate: `${end_time}` });
         document.querySelector("#appointment-time").innerHTML += `
         <option value="${value}">
         ${startTimeStr} - ${endTimeStr}
@@ -356,7 +356,7 @@ const onDateChange = (_date) => {
     .catch((err) => {
       console.log("err", err);
     });
-  }
+}
 
 /* Get selected office */
 const setSelectedPlace = () => {
@@ -396,7 +396,22 @@ const setSelectedPlace = () => {
 </div>
   `;
 };
-
+const validate = new bootstrap.FormValidate('#form-steps', {
+  errorFieldCssClass: 'is-invalid',
+  errorLabelCssClass: 'form-feedback',
+  errorLabelStyle: '',
+  focusInvalidField: false,
+})
+validate
+  .addField('#email', [
+    {
+      rule: 'required',
+      errorMessage: 'Questo campo è richiesto',
+    },
+    {
+      rule: 'email', errorMessage: 'Email non valida',
+    },
+  ])
 /* Step 3 */
 const serviceSelect = document.getElementById("motivo-appuntamento");
 serviceSelect.addEventListener("change", () => {
@@ -423,7 +438,12 @@ surnameInput.addEventListener("input", () => {
 
 const emailInput = document.getElementById("email");
 emailInput.addEventListener("input", () => {
+  validate.revalidateField('#email');
+  if(validate.fields['#email'].isValid){
   saveAnswerByValue("email", emailInput?.value);
+  } else {
+  checkMandatoryFields();
+  }
 });
 
 /* Step 5 */
@@ -447,9 +467,8 @@ const setReviews = () => {
   document.getElementById("review-office").innerHTML = answers?.office?.name;
   document.getElementById("review-place").innerHTML = answers?.place?.nome;
   document.getElementById("review-date").innerHTML = getDay();
-  document.getElementById("review-hour").innerHTML = `${getHour()[0]} - ${
-    getHour()[1]
-  }`;
+  document.getElementById("review-hour").innerHTML = `${getHour()[0]} - ${getHour()[1]
+    }`;
   document.getElementById("review-service").innerHTML = answers?.service?.name;
   document.getElementById("review-details").innerHTML = answers?.moreDetails;
   document.getElementById("review-name").innerHTML = answers?.name;
@@ -481,7 +500,7 @@ const checkMandatoryFields = () => {
       break;
 
     case 5:
-      if (answers?.name && answers?.surname && answers?.email)
+      if (answers?.name && answers?.surname && answers?.email && validate.fields['#email'].isValid)
         btnNext.disabled = false;
       else btnNext.disabled = true;
       break;
@@ -495,9 +514,8 @@ const checkMandatoryFields = () => {
 
 async function successFeedback() {
   document.getElementById("email-recap").innerText = answers?.email;
-  document.getElementById("date-recap").innerText = ` ${getDay()} dalle ore ${
-    getHour()[0]
-  } alle ore ${getHour()[1]}`;
+  document.getElementById("date-recap").innerText = ` ${getDay()} dalle ore ${getHour()[0]
+    } alle ore ${getHour()[1]}`;
   //service
   const service = await getServiceDetail(answers?.service?.id);
   if (service?._dci_servizio_cosa_serve_list?.length > 0 || service?._dci_servizio_cosa_serve_introduzione) {
@@ -551,7 +569,7 @@ const confirmAppointment = () => {
     .then(async (response) => {
       if (!response.ok) {
 
-        throw ({...await response.json()});
+        throw ({ ...await response.json() });
       }
       return response.json();
     })
@@ -563,12 +581,12 @@ const confirmAppointment = () => {
       if (mainContainer) mainContainer.scrollIntoView({ behavior: "smooth" });
     })
     .catch((err) => {
-      switch(err?.data?.code){
-        case 1: 
-        const errAlert = document.getElementById('error-alert');
-        if(!errAlert){
-          return;
-        }
+      switch (err?.data?.code) {
+        case 1:
+          const errAlert = document.getElementById('error-alert');
+          if (!errAlert) {
+            return;
+          }
           errAlert.classList.remove('d-none');
           errAlert.textContent = err?.data?.message;
           const selected = document.querySelector("#appointment-time")?.selectedIndex;
@@ -577,15 +595,15 @@ const confirmAppointment = () => {
           checkMandatoryFields();
           document.getElementById('error-alert')?.scrollIntoView({ behavior: "smooth" });
           document.querySelector("#appointment-time")?.addEventListener("change", (e) => {
-            if(e?.target?.value && !document.getElementById('error-alert')?.classList.contains("d-none")){
+            if (e?.target?.value && !document.getElementById('error-alert')?.classList.contains("d-none")) {
               document.getElementById('error-alert')?.classList.add('d-none');
             }
           })
           goBackTo(3);
-        break;
+          break;
         default:
-        console.log("err", err);
-      break;
+          console.log("err", err);
+          break;
       }
     });
 };
@@ -612,11 +630,11 @@ async function getServiceDetail(id) {
   }
 }
 
-function goBackTo(i){
-  if(isNaN(i)){
+function goBackTo(i) {
+  if (isNaN(i)) {
     return;
   }
-  while(i > 0){
+  while (i > 0) {
     backPrevious();
     i--;
   }
