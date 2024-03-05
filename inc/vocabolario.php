@@ -3,8 +3,9 @@
 /**
  * Vocabolario controllato che raccoglie un subset dei vocaboli definiti in Eurovoc
  */
-if(!function_exists("dci_argomenti_array")){
-    function dci_argomenti_array() {
+if (!function_exists("dci_argomenti_array")) {
+    function dci_argomenti_array()
+    {
         $argomenti_arr = [
             'Accesso all\'informazione',
             'Acqua',
@@ -35,14 +36,14 @@ if(!function_exists("dci_argomenti_array")){
             'Sport',
             'Imposte',
             'Imprese',
-            'Inquinamento' ,
+            'Inquinamento',
             'Integrazione sociale',
-            'Isolamento termico' ,
+            'Isolamento termico',
             'Istruzione',
             'Lavoro',
             'Matrimonio',
             'Mercato',
-            'Mobilità sostenibile' ,
+            'Mobilità sostenibile',
             'Morte',
             'Nascita',
             'Parcheggi',
@@ -53,8 +54,8 @@ if(!function_exists("dci_argomenti_array")){
             'Politica commerciale',
             'Polizia',
             'Prodotti alimentari',
-            'Protezione civile' ,
-            'Residenza' ,
+            'Protezione civile',
+            'Residenza',
             'Risposta alle emergenze',
             'Sistema giuridico',
             'Spazio Verde',
@@ -76,8 +77,9 @@ if(!function_exists("dci_argomenti_array")){
 /**
  * Classificazione multi livello dei tipi di Unità organizzativa che distingue tra macro ambiti di un'amministrazione locale
  */
-if(!function_exists("dci_tipi_unita_organizzativa_array")){
-    function dci_tipi_unita_organizzativa_array() {
+if (!function_exists("dci_tipi_unita_organizzativa_array")) {
+    function dci_tipi_unita_organizzativa_array()
+    {
         $tipi_unita_organizzativa_arr = [
             'struttura amministrativa' => [
                 'area',
@@ -105,8 +107,9 @@ if(!function_exists("dci_tipi_unita_organizzativa_array")){
 /**
  * Classificazione delle materie dei Servizi pubblici, definita nel Vocabolario controllato sulle Materie dei servizi Pubblici
  */
-if(!function_exists("dci_categorie_servizio_array")){
-    function dci_categorie_servizio_array() {
+if (!function_exists("dci_categorie_servizio_array")) {
+    function dci_categorie_servizio_array()
+    {
         $categorie_servizio_arr = [
             'Agricoltura e pesca',
             'Ambiente',
@@ -131,8 +134,9 @@ if(!function_exists("dci_categorie_servizio_array")){
 /**
  * Classificazione delle Licenze dei dataset secondo il Vocabolario Controllato Licenze
  */
-if(!function_exists("dci_licenze_array")){
-    function dci_licenze_array() {
+if (!function_exists("dci_licenze_array")) {
+    function dci_licenze_array()
+    {
         $licenze_arr = [
             'licenza aperta' => [
                 'pubblico dominio',
@@ -153,8 +157,9 @@ if(!function_exists("dci_licenze_array")){
 /**
  * Classificazione dei Temi dei dati secondo il Vocabolario Controllato Temi dei dati
  */
-if(!function_exists("dci_temi_dataset_array")){
-    function dci_temi_dataset_array() {
+if (!function_exists("dci_temi_dataset_array")) {
+    function dci_temi_dataset_array()
+    {
         $temi_dataset_arr = [
             'agricoltura, pesca, silvicoltura e prodotti alimentari',
             'economia e Finanze',
@@ -177,8 +182,9 @@ if(!function_exists("dci_temi_dataset_array")){
 /**
  * Classificazione della Frequenza di aggiornamento secondo il Vocabolario Controllato Frequenza
  */
-if(!function_exists("dci_frequenze_aggiornamento_array")){
-    function dci_frequenze_aggiornamento_array() {
+if (!function_exists("dci_frequenze_aggiornamento_array")) {
+    function dci_frequenze_aggiornamento_array()
+    {
         $frequenze_aggiornamento_arr = [
             'altro',
             'annuale',
@@ -218,8 +224,9 @@ if(!function_exists("dci_frequenze_aggiornamento_array")){
 /**
  * Classificazione dei Tipi di Punti di contatto riprendendo le Linee Guida Cataloghi dei dati
  */
-if(!function_exists("dci_tipi_punto_contatto_array")){
-    function dci_tipi_punto_contatto_array() {
+if (!function_exists("dci_tipi_punto_contatto_array")) {
+    function dci_tipi_punto_contatto_array()
+    {
         $tipi_punto_contatto_arr = [
             'Indirizzo',
             'Email',
@@ -241,8 +248,9 @@ if(!function_exists("dci_tipi_punto_contatto_array")){
 /**
  * Classificazione multi livello dei Documenti che sono di tipo Albo Pretorio
  */
-if(!function_exists("dci_tipi_doc_albo_pretorio_array")){
-    function dci_tipi_doc_albo_pretorio_array() {
+if (!function_exists("dci_tipi_doc_albo_pretorio_array")) {
+    function dci_tipi_doc_albo_pretorio_array()
+    {
         $tipi_doc_albo_pretorio_arr = [
             'Atto amministrativo' => [
                 'Decreto' => [
@@ -306,8 +314,9 @@ if(!function_exists("dci_tipi_doc_albo_pretorio_array")){
 /**
  *Classificazione degli Eventi della vita delle persone (Life Events), definita nel Vocabolario controllato degli eventi della vita delle persone. Aggiornato al 17/03/2022
  */
-if(!function_exists("dci_eventi_vita_persone_array")){
-    function dci_eventi_vita_persone_array() {
+if (!function_exists("dci_eventi_vita_persone_array")) {
+    function dci_eventi_vita_persone_array()
+    {
         $eventi_vita_persone_arr = [
             'Iscrizione Scuola/Università e/o richiesta borsa di studio',
             'Invalidità',
@@ -336,8 +345,9 @@ if(!function_exists("dci_eventi_vita_persone_array")){
 /**
  *Classificazione degli Eventi della vita di un'impresa (Business Events), definita nel Vocabolario controllato degli eventi di business (evento della vita di un'impresa). Aggiornato al 17/03/2022
  */
-if(!function_exists("dci_eventi_vita_impresa_array")){
-    function dci_eventi_vita_impresa_array() {
+if (!function_exists("dci_eventi_vita_impresa_array")) {
+    function dci_eventi_vita_impresa_array()
+    {
         $eventi_vita_impresa_arr = [
             'Avvio impresa',
             'Avvio nuova attività professionale',
@@ -362,8 +372,9 @@ if(!function_exists("dci_eventi_vita_impresa_array")){
 /**
  *Classificazione multi livello dei Tipi di incarico che una persona può ricoprire presso un'amministrazione locale
  */
-if(!function_exists("dci_tipi_incarico_array")){
-    function dci_tipi_incarico_array() {
+if (!function_exists("dci_tipi_incarico_array")) {
+    function dci_tipi_incarico_array()
+    {
         $tipi_incarico_arr = [
             'politico',
             'amministrativo',
@@ -376,8 +387,9 @@ if(!function_exists("dci_tipi_incarico_array")){
 /**
  *Classificazione multi livello degli Stati di una Pratica
  */
-if(!function_exists("dci_stati_pratica_array")){
-    function dci_stati_pratica_array() {
+if (!function_exists("dci_stati_pratica_array")) {
+    function dci_stati_pratica_array()
+    {
         $stati_pratica_arr = [
             'Processo non avviato' => [
                 'In bozza'
@@ -399,8 +411,9 @@ if(!function_exists("dci_stati_pratica_array")){
 /**
  * Classificazione multi livello delle Notizie pubblicate da un'amministrazione locale
  */
-if(!function_exists("dci_tipi_notizia_array")){
-    function dci_tipi_notizia_array() {
+if (!function_exists("dci_tipi_notizia_array")) {
+    function dci_tipi_notizia_array()
+    {
         $tipi_notizia_arr = [
             'Notizie',
             'Comunicati',
@@ -413,8 +426,9 @@ if(!function_exists("dci_tipi_notizia_array")){
 /**
  * Classificazione multi livello dei Luoghi di interesse pubblico, definita nella Tassonomia dei luoghi pubblici di interesse culturale
  */
-if(!function_exists("dci_luoghi_array")){
-    function dci_luoghi_array() {
+if (!function_exists("dci_luoghi_array")) {
+    function dci_luoghi_array()
+    {
         $luoghi_arr = [
             'Architettura Militare e fortificata' => [
                 'Castello',
@@ -432,7 +446,7 @@ if(!function_exists("dci_luoghi_array")){
                 'Sito archeologico',
                 'Parco archeologico'
             ],
-            'Centro per la cultura'=>[
+            'Centro per la cultura' => [
                 'Acquario',
                 'Anfiteatro',
                 'Archivio',
@@ -444,12 +458,12 @@ if(!function_exists("dci_luoghi_array")){
                 'Osservatorio',
                 'Pinacoteca',
                 'Planetario',
-                'Scuola',
+                'Scuola' => ['Asili nido',],
                 'Teatro',
                 'Università/Facoltà',
                 'Parco Archeologico',
             ],
-            'Edificio di culto'=>[
+            'Edificio di culto' => [
                 'Abbazia',
                 'Chiesa',
                 'Campanile',
@@ -531,10 +545,11 @@ if(!function_exists("dci_luoghi_array")){
 /**
  * Classificazione multi livello degli Eventi di interesse pubblico, definita nella Tassonomia degli eventi di interesse pubblico
  */
-if(!function_exists("dci_tipi_evento_array")){
-    function dci_tipi_evento_array() {
+if (!function_exists("dci_tipi_evento_array")) {
+    function dci_tipi_evento_array()
+    {
         $tipi_evento_arr = [
-            'Evento culturale'=> [
+            'Evento culturale' => [
                 'Manifestazione artistica' => [
                     'Festival',
                     'Mostra',
@@ -563,7 +578,7 @@ if(!function_exists("dci_tipi_evento_array")){
                     'Giornata aperta'
                 ]
             ],
-            'Evento sociale'=> [
+            'Evento sociale' => [
                 'Concorso e cerimonia' => [
                     'Cerimonia',
                     'Concorso/competizione'
@@ -594,14 +609,14 @@ if(!function_exists("dci_tipi_evento_array")){
                     'Santificazione',
                 ]
             ],
-            'Evento politico'=> [
+            'Evento politico' => [
                 'Incontro pubblico' => [
                     'Congresso o riunione di partito',
                     'Corteo o sciopero',
                     'Comizio elettorale'
                 ]
             ],
-            'Evento di affari o commerciale'=> [
+            'Evento di affari o commerciale' => [
                 'Fiera o Salone' => [
                     'Fiera o Salone',
                     'Esposizione o Esposizione globale'
@@ -615,7 +630,7 @@ if(!function_exists("dci_tipi_evento_array")){
                     'Vendita di fine stagione'
                 ]
             ],
-            'Evento Sportivo'=> [
+            'Evento Sportivo' => [
                 'Manifestazione sportiva' => [
                     'Partita',
                     'Gara o Torneo o Competizione',
@@ -633,8 +648,9 @@ if(!function_exists("dci_tipi_evento_array")){
 /**
  * Classificazione dei tipi di documento, definita nel Vocabolario Controllato Tipi di Documenti delle Pubbliche Amministrazioni
  */
-if(!function_exists("dci_tipi_documento_array")){
-    function dci_tipi_documento_array() {
+if (!function_exists("dci_tipi_documento_array")) {
+    function dci_tipi_documento_array()
+    {
         $tipi_documento_arr = [
             'Documento Albo Pretorio',
             'Modulistica',
@@ -654,8 +670,9 @@ if(!function_exists("dci_tipi_documento_array")){
 /**
  * Plurali dei tipi di documento,
  */
-if(!function_exists("dci_tipi_documento_plural_array")){
-    function dci_tipi_documento_plural_array() {
+if (!function_exists("dci_tipi_documento_plural_array")) {
+    function dci_tipi_documento_plural_array()
+    {
         $tipi_documento_plural_arr = [
             'Documento Albo Pretorio' => 'Documenti Albo Pretorio',
             'Modulistica' => 'Modulistica',
@@ -675,8 +692,9 @@ if(!function_exists("dci_tipi_documento_plural_array")){
 /**
  * descrizioni dei termini della tassonomia Categorie di Servizio
  */
-if(!function_exists('dci_get_categorie_servizio_descriptions_array')){
-    function dci_get_categorie_servizio_descriptions_array(){
+if (!function_exists('dci_get_categorie_servizio_descriptions_array')) {
+    function dci_get_categorie_servizio_descriptions_array()
+    {
         $categorie_servizio_descriptions_arr = [
             'Anagrafe e stato civile' => 'Documenti d\'identità, cambio di residenza, servizi elettorali, cimiteriali e certificati per nascita, matrimoni e unioni civili.',
             'Cultura e tempo libero' => 'Luoghi della cultura e dell’arte, impianti sportivi e richieste di contributi per la cultura, lo spettacolo e lo sport.',
@@ -697,4 +715,3 @@ if(!function_exists('dci_get_categorie_servizio_descriptions_array')){
         return $categorie_servizio_descriptions_arr;
     }
 }
-
