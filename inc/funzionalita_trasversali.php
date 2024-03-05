@@ -227,12 +227,11 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
             )
         );
     }
-    $orari_apertura_mattina = dci_get_meta("orari_apertura_mattina", '_dci_unita_organizzativa_', $office_id);
-    $orari_chiusura_mattina = dci_get_meta("orari_chiusura_mattina", '_dci_unita_organizzativa_', $office_id);
-    $orari_apertura_pomeriggio = dci_get_meta("orari_apertura_pomeriggio", '_dci_unita_organizzativa_', $office_id);
-    $orari_chiusura_pomeriggio = dci_get_meta("orari_chiusura_pomeriggio", '_dci_unita_organizzativa_', $office_id);
+    $orari_apertura_mattina = dci_get_meta("orari_apertura_mattina", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("orari_apertura_mattina", '_dci_unita_organizzativa_', $office_id) : null;
+    $orari_chiusura_mattina = dci_get_meta("orari_chiusura_mattina", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("orari_chiusura_mattina", '_dci_unita_organizzativa_', $office_id) : null;
+    $orari_apertura_pomeriggio = dci_get_meta("orari_apertura_pomeriggio", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("orari_apertura_pomeriggio", '_dci_unita_organizzativa_', $office_id) : null;
+    $orari_chiusura_pomeriggio = dci_get_meta("orari_chiusura_pomeriggio", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("orari_chiusura_pomeriggio", '_dci_unita_organizzativa_', $office_id) : null;
     $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id);
-
     $args = array('numberposts' => -1, 'post_status' => 'any', 'post_type' => 'appuntamento', 'meta_query' => array(
         array('key' => '_dci_appuntamento_unita_organizzativa_id', 'value' => $office_id),
         array('key' => '_dci_appuntamento_data_ora_inizio_appuntamento', 'value' =>  $date, 'compare' => 'LIKE')
@@ -244,17 +243,25 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
         $prenotazioni_selected[$prenotazione] = isset($prenotazioni_selected[$prenotazione]) ? $prenotazioni_selected[$prenotazione] + 1 : 1;
     }
 
-    $dates =
-        new DatePeriod(
-            new DateTime($date . 'T' . $orari_apertura_mattina . ':00'),
+    if ($orari_apertura_mattina && $orari_chiusura_mattina) {
+        $dates =
+            new DatePeriod(
+                new DateTime($date . 'T' . $orari_apertura_mattina . ':00'),
+                new DateInterval('PT30M'),
+                new DateTime($date . 'T' . $orari_chiusura_mattina . ':01'),
+            );
+    } else {
+        $dates = [];
+    }
+    if ($orari_apertura_pomeriggio && $orari_chiusura_pomeriggio) {
+        $datesP =  new DatePeriod(
+            new DateTime($date . 'T' . $orari_apertura_pomeriggio . ':00'),
             new DateInterval('PT30M'),
-            new DateTime($date . 'T' . $orari_chiusura_mattina . ':01'),
+            new DateTime($date . 'T' . $orari_chiusura_pomeriggio . ':01'),
         );
-    $datesP =  new DatePeriod(
-        new DateTime($date . 'T' . $orari_apertura_pomeriggio . ':00'),
-        new DateInterval('PT30M'),
-        new DateTime($date . 'T' . $orari_chiusura_pomeriggio . ':01'),
-    );
+    } else {
+        $datesP = [];
+    }
     $res = array();
     $dates = array_merge(iterator_to_array($dates), iterator_to_array($datesP));
     $count = count($dates);

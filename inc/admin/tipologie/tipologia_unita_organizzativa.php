@@ -192,12 +192,11 @@ function dci_add_unita_organizzativa_metaboxes()
     ));
     $cmb_persone->add_field(array(
         'id' => $prefix . 'persone_struttura',
-        'name'    => __('Persone che compongono la struttura *', 'design_comuni_italia'),
+        'name'    => __('Persone che compongono la struttura', 'design_comuni_italia'),
         'desc' => __('Un link alla scheda persona per ciascuno dei componenti della struttura.', 'design_comuni_italia'),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('persona_pubblica'),
         'attributes'    => array(
-            'required'    => 'required',
             'placeholder' =>  __('Seleziona le Persone Pubbliche', 'design_comuni_italia'),
 
         ),
@@ -247,9 +246,21 @@ function dci_add_unita_organizzativa_metaboxes()
     ));
 
     $cmb_orari->add_field(array(
+        'id'      => $prefix . 'periodo_apertura',
+        'name'    => 'Periodo apertura al pubblico',
+        'desc'    => 'Periodo apertura al pubblico',
+        'type'    => 'multicheck',
+        'options' => array(
+            '1' => 'Mattina',
+            '2' => 'Pomeriggio',
+        ),
+    ));
+
+    $cmb_orari->add_field(array(
         'id'      => $prefix . 'orari_apertura_mattina',
         'name'    => 'Orario di apertura mattutino al pubblico',
         'desc'    => 'Orario di apertura mattutino al pubblico',
+        'show_on'      => array('key' => $prefix . 'periodo_apertura', 'value' => '1'),
         'type' => 'text_time',
         'attributes' => array(
             'data-timepicker' => json_encode(array(
@@ -262,6 +273,7 @@ function dci_add_unita_organizzativa_metaboxes()
         'id'      => $prefix . 'orari_chiusura_mattina',
         'name'    => 'Orario di chiusura mattutino al pubblico',
         'desc'    => 'Orario di chiusura mattutino al pubblico',
+        'show_on'      => array('key' => $prefix . 'periodo_apertura', 'value' => '1'),
         'type' => 'text_time',
         'attributes' => array(
             'data-timepicker' => json_encode(array(
@@ -274,6 +286,7 @@ function dci_add_unita_organizzativa_metaboxes()
         'id'      => $prefix . 'orari_apertura_pomeriggio',
         'name'    => 'Orario di apertura pomeridiano al pubblico',
         'desc'    => 'Orario di apertura pomeridiano al pubblico',
+        'show_on'      => array('key' => $prefix . 'periodo_apertura', 'value' => '2'),
         'type' => 'text_time',
         'attributes' => array(
             'data-timepicker' => json_encode(array(
@@ -286,6 +299,7 @@ function dci_add_unita_organizzativa_metaboxes()
         'id'      => $prefix . 'orari_chiusura_pomeriggio',
         'name'    => 'Orario di chiusura pomeridiano al pubblico',
         'desc'    => 'Orario di chiusura pomeridiano al pubblico',
+        'show_on'      => array('key' => $prefix . 'periodo_apertura', 'value' => '2'),
         'type' => 'text_time',
         'attributes' => array(
             'data-timepicker' => json_encode(array(
