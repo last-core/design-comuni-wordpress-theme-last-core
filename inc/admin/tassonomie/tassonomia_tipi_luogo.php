@@ -26,6 +26,7 @@ function dci_register_taxonomy_tipi_luogo()
         'show_ui'           => true,
         'show_admin_column' => true,
         'query_var'         => true,
+        'show_in_rest'      => true,
         'has_archive'           => true,    //archive page
         //'rewrite'           => array( 'slug' => 'tipo-luogo' ),
         'capabilities'      => array(
