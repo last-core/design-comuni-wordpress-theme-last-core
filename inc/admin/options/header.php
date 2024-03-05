@@ -46,6 +46,19 @@ function dci_register_header_options()
     ));
 
     $header_options->add_field(array(
+        'id'   => $prefix . 'lingua_hide',
+        'name' => __('Nascondi menù lingua', 'design_comuni_italia'),
+        'desc' => __('scegli se nascondere o meno il menù di selezione lingua', 'design_comuni_italia'),
+        'type'    => 'radio_inline',
+        'options' => array(
+            '0' => __('Mostra', 'cmb2'),
+            '1'   => __('Nascondi', 'cmb2'),
+        ),
+        'default' => '0',
+
+    ));
+
+    $header_options->add_field(array(
         'id' => $prefix . 'area_riservata_link',
         'name'        => __('URL Area riservata', 'design_comuni_italia'),
         'desc'        => __('Link alla Area riservata', 'design_comuni_italia'),
