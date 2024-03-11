@@ -230,6 +230,26 @@ function dci_add_unita_organizzativa_metaboxes()
     ));
 
     $cmb_orari->add_field(array(
+        'id'      => $prefix . 'prenota_appuntamento',
+        'name'    => 'Prenotazioni appuntamenti online',
+        'desc'    => 'Attivo',
+        'type'    => 'checkbox'
+    ));
+
+    $cmb_orari->add_field(array(
+        'id'      => $prefix . 'email_prenotazione',
+        'name'    => 'Email per inoltro prenotazione appuntamento',
+        'desc'    => '',
+        'type'    => 'text_medium',
+        'attrbutes' => array(
+            'type' => 'email',
+        ),
+        'attributes' => array(
+            'data-p-group' => 1
+        )
+    ));
+
+    $cmb_orari->add_field(array(
         'id'      => $prefix . 'giorni_apertura',
         'name'    => 'Giorni settimanali aperti al pubblico',
         'desc'    => 'Giorni settimanali aperti al pubblico',
@@ -243,6 +263,9 @@ function dci_add_unita_organizzativa_metaboxes()
             '6' => 'Sabato',
             '7' => 'Domenica'
         ),
+        'attributes' => array(
+            'data-p-group' => 1
+        )
     ));
 
     $cmb_orari->add_field(array(
@@ -254,6 +277,9 @@ function dci_add_unita_organizzativa_metaboxes()
             '1' => 'Mattina',
             '2' => 'Pomeriggio',
         ),
+        'attributes' => array(
+            'data-p-group' => 1
+        )
     ));
 
     $cmb_orari->add_field(array(
@@ -265,7 +291,10 @@ function dci_add_unita_organizzativa_metaboxes()
         'attributes' => array(
             'data-timepicker' => json_encode(array(
                 'timeFormat' => 'HH:mm',
+
             )),
+            'data-p-group' => 1
+
         ),
         'time_format' => 'H:i',
     ));
@@ -279,6 +308,8 @@ function dci_add_unita_organizzativa_metaboxes()
             'data-timepicker' => json_encode(array(
                 'timeFormat' => 'HH:mm',
             )),
+            'data-p-group' => 1
+
         ),
         'time_format' => 'H:i',
     ));
@@ -292,6 +323,8 @@ function dci_add_unita_organizzativa_metaboxes()
             'data-timepicker' => json_encode(array(
                 'timeFormat' => 'HH:mm',
             )),
+            'data-p-group' => 1
+
         ),
         'time_format' => 'H:i',
     ));
@@ -305,6 +338,8 @@ function dci_add_unita_organizzativa_metaboxes()
             'data-timepicker' => json_encode(array(
                 'timeFormat' => 'HH:mm',
             )),
+            'data-p-group' => 1
+
         ),
         'time_format' => 'H:i',
     ));
@@ -316,7 +351,9 @@ function dci_add_unita_organizzativa_metaboxes()
         'attributes' => array(
             'placeholder' => '5',
             'type' => 'number',
-            'min' => '1'
+            'min' => '1',
+            'data-p-group' => 1
+
         ),
     ));
     $giorni_chiusura_group = $cmb_orari->add_field(array(
@@ -331,6 +368,9 @@ function dci_add_unita_organizzativa_metaboxes()
             // 'closed'         => true, // true to have the groups closed by default
             // 'remove_confirm' => esc_html__( 'Are you sure you want to remove?', 'cmb2' ), // Performs confirmation before removing group.
         ),
+        'attributes' => array(
+            'data-p-group' => 1
+        )
     ));
 
     // Id's for group's fields only need to be unique for the group. Prefix is not needed.
@@ -339,6 +379,9 @@ function dci_add_unita_organizzativa_metaboxes()
         'id'   => 'giorno_chiusura',
         'type'    => 'text_date',
         'date_format' => 'd-m-Y',
+        'attributes' => array(
+            'data-p-group' => 1
+        )
     ));
 
     //CONTATTI

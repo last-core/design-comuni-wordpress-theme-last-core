@@ -345,8 +345,57 @@ function dci_save_rating()
     ));
     wp_die();
 }
+function dci_save_rating_rest(WP_REST_Request $request)
+{
+
+    $params = $request->get_body_params();
+
+    if ((array_key_exists("title", $params)) && ($params['title'] != null)) {
+        $postId = wp_insert_post(array(
+            'post_type' => 'rating',
+            'post_title' =>  $params['title']
+        ));
+    }
+
+    if ($postId == 0) {
+        return new WP_Error('client_error', "Oops, qualcosa è andato storto!", array('status' => 400));
+    }
+
+    if (array_key_exists("star", $params) && $params['star'] != "null") {
+        wp_set_object_terms($postId, $params['star'], "stars");
+        update_post_meta($postId, '_dci_rating_stelle',  $params['star']);
+    }
+
+    if (array_key_exists("radioResponse", $params) && $params['radioResponse'] != "null") {
+        update_post_meta($postId, '_dci_rating_risposta_chiusa',  $params['radioResponse']);
+    }
+
+    if (array_key_exists("freeText", $params) && $params['freeText'] != "null") {
+        update_post_meta($postId, '_dci_rating_risposta_aperta',  $params['freeText']);
+    }
+
+    if (array_key_exists("page", $params) && $params['page'] != "null") {
+        update_post_meta($postId, '_dci_rating_url',  $params['page']);
+        wp_set_object_terms($postId, $params['page'], "page_urls");
+    }
+
+    return array(
+        "success" => true,
+        "rating" => array(
+            "id" => $postId
+        )
+    );
+}
 add_action("wp_ajax_save_rating", "dci_save_rating");
 add_action("wp_ajax_nopriv_save_rating", "dci_save_rating");
+function dci_register_rating_route()
+{
+    register_rest_route('wp/v2', '/rating/', array(
+        'methods' => 'POST',
+        'callback' => 'dci_save_rating_rest'
+    ));
+}
+add_action('rest_api_init', 'dci_register_rating_route');
 
 
 /**
@@ -526,14 +575,7 @@ function dci_save_appuntamento()
     if (array_key_exists("office", $params) && $params['office'] != "null") {
         $office_obj = json_decode(stripslashes($params['office']), true);
         $office_id = $office_obj['id'];
-        $contatti_id = dci_get_meta("contatti", '_dci_unita_organizzativa_', $office_id);
-        if (is_array($contatti_id) && count($contatti_id)) {
-            $contatti = dci_get_meta("voci", "_dci_punto_contatto_", $contatti_id[0]);
-            $ufficio_email = array_filter($contatti, fn ($contatto) => $contatto['_dci_punto_contatto_tipo_punto_contatto'] === 'email');
-            if (is_array($ufficio_email) && count($ufficio_email)) {
-                $ufficio_email = $ufficio_email[0]['_dci_punto_contatto_valore'];
-            }
-        }
+        $ufficio_email = dci_get_meta("email_prenotazione", "_dci_unita_organizzativa_", $office_id);
         update_post_meta($postId, '_dci_appuntamento_unita_organizzativa', $office_obj['name']);
         update_post_meta($postId, '_dci_appuntamento_unita_organizzativa_id', $office_id);
     }

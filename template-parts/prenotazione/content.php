@@ -65,7 +65,8 @@ for ($i = 0; $i < 12; $i++) {
                             </option>
                             <?php foreach ($uffici as $ufficio) {
                                 $servizi_offerti = dci_get_meta("elenco_servizi_offerti", '_dci_unita_organizzativa_', $ufficio->ID);
-                                if (is_array($servizi_offerti) && count($servizi_offerti)) {
+                                $prenota = dci_get_meta("prenota_appuntamento", '_dci_unita_organizzativa_', $ufficio->ID);
+                                if (is_array($servizi_offerti) && count($servizi_offerti) && $prenota) {
                                     echo '<option value="' . $ufficio->ID . '">' . $ufficio->post_title . '</option>';
                                 }
                             } ?>
