@@ -70,6 +70,8 @@ function dci_add_servizi_metaboxes()
         'object_types' => array('servizio'),
         'context'      => 'side',
         'priority'     => 'high',
+        'show_in_rest' => WP_REST_Server::READABLE,
+
     ));
 
     $cmb_stato->add_field(array(
@@ -81,6 +83,7 @@ function dci_add_servizi_metaboxes()
             "true"  => __('Attivo', 'design_comuni_italia'),
             "false" => __('Disattivo', 'design_comuni_italia'),
         ),
+        'show_in_rest' => WP_REST_Server::READABLE,
     ));
 
     $cmb_stato->add_field(array(
@@ -92,6 +95,7 @@ function dci_add_servizi_metaboxes()
             'data-conditional-id'    => $prefix . 'stato',
             'data-conditional-value' => "false",
         ),
+        'show_in_rest' => WP_REST_Server::READABLE,
     ));
 
     //APERTURA
