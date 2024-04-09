@@ -348,7 +348,7 @@ function dci_save_rating()
 function dci_save_rating_rest(WP_REST_Request $request)
 {
 
-    $params = $request->get_body_params();
+    $params = json_decode($request->get_body(), true);
 
     if ((array_key_exists("title", $params)) && ($params['title'] != null)) {
         $postId = wp_insert_post(array(
