@@ -145,7 +145,6 @@ add_action('rest_api_init', 'dci_register_prenotazioni_date_route');
  */
 function dci_get_prenotazioni_date(WP_REST_Request $request)
 {
-
     $params = $_GET;
     if (array_key_exists('month', $params)) {
         $month  = $params['month'];
@@ -153,7 +152,6 @@ function dci_get_prenotazioni_date(WP_REST_Request $request)
     if (array_key_exists('office', $params)) {
         $office_id = $params['office'];
     }
-
     if (!isset($month) || $month == '' || !isset($office_id) || $office_id == '') {
         return array(
             "error" => array(
@@ -162,8 +160,10 @@ function dci_get_prenotazioni_date(WP_REST_Request $request)
             )
         );
     }
-    $giorni_apertura = dci_get_meta("giorni_apertura", '_dci_unita_organizzativa_', $office_id);
-    $giorni_apertura = is_array($giorni_apertura) ? $giorni_apertura : [];
+    $fasce_orarie = dci_get_meta("fasce_orarie", '_dci_unita_organizzativa_', $office_id);
+    $giorni_apertura = is_array($fasce_orarie) ? array_reduce($fasce_orarie, function ($p, $v) {
+        return array_merge($p, $v['_dci_unita_organizzativa_giorni_apertura']);
+    }, array()) : [];
     $giorni_chiusura = dci_get_meta("giorni_chiusura", '_dci_unita_organizzativa_', $office_id);
     $giorni_chiusura = is_array($giorni_chiusura) ? array_map(function ($a) {
         return $a['giorno_chiusura'];
@@ -227,11 +227,19 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
             )
         );
     }
-    $orari_apertura_mattina = dci_get_meta("orari_apertura_mattina", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("orari_apertura_mattina", '_dci_unita_organizzativa_', $office_id) : null;
-    $orari_chiusura_mattina = dci_get_meta("orari_chiusura_mattina", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("orari_chiusura_mattina", '_dci_unita_organizzativa_', $office_id) : null;
-    $orari_apertura_pomeriggio = dci_get_meta("orari_apertura_pomeriggio", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("orari_apertura_pomeriggio", '_dci_unita_organizzativa_', $office_id) : null;
-    $orari_chiusura_pomeriggio = dci_get_meta("orari_chiusura_pomeriggio", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("orari_chiusura_pomeriggio", '_dci_unita_organizzativa_', $office_id) : null;
-    $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id);
+    $week_day = new DateTime($date);
+    $week_day = $week_day->format('N');
+    $fasce_orarie = dci_get_meta("fasce_orarie", '_dci_unita_organizzativa_', $office_id);
+    $fasce_orarie = array_filter($fasce_orarie, function ($item) use ($week_day) {
+        return in_array($week_day, $item['_dci_unita_organizzativa_giorni_apertura']);
+    });
+    $fasce_orarie = count($fasce_orarie) !== 0 ? array_values($fasce_orarie)[0] : [];
+    $orari_apertura_mattina = $fasce_orarie['_dci_unita_organizzativa_orari_apertura_mattina'] ? $fasce_orarie['_dci_unita_organizzativa_orari_apertura_mattina'] : null;
+    $orari_chiusura_mattina = $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_mattina'] ? $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_mattina'] : null;
+    $orari_apertura_pomeriggio = $fasce_orarie['_dci_unita_organizzativa_orari_apertura_pomeriggio'] ? $fasce_orarie['_dci_unita_organizzativa_orari_apertura_pomeriggio']  : null;
+    $orari_chiusura_pomeriggio = $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_pomeriggio']  ? $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_pomeriggio']  : null;
+    $durata_appuntamento = dci_get_meta("durata_appuntamento", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("durata_appuntamento", '_dci_unita_organizzativa_', $office_id) : 30;
+    $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id) || 1;
     $args = array('numberposts' => -1, 'post_status' => 'any', 'post_type' => 'appuntamento', 'meta_query' => array(
         array('key' => '_dci_appuntamento_unita_organizzativa_id', 'value' => $office_id),
         array('key' => '_dci_appuntamento_data_ora_inizio_appuntamento', 'value' =>  $date, 'compare' => 'LIKE')
@@ -247,7 +255,7 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
         $dates =
             new DatePeriod(
                 new DateTime($date . 'T' . $orari_apertura_mattina . ':00'),
-                new DateInterval('PT30M'),
+                new DateInterval('PT' . $durata_appuntamento . 'M'),
                 new DateTime($date . 'T' . $orari_chiusura_mattina . ':01'),
             );
     } else {
@@ -256,7 +264,7 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
     if ($orari_apertura_pomeriggio && $orari_chiusura_pomeriggio) {
         $datesP =  new DatePeriod(
             new DateTime($date . 'T' . $orari_apertura_pomeriggio . ':00'),
-            new DateInterval('PT30M'),
+            new DateInterval('PT' . $durata_appuntamento . 'M'),
             new DateTime($date . 'T' . $orari_chiusura_pomeriggio . ':01'),
         );
     } else {
@@ -517,7 +525,7 @@ function dci_save_appuntamento()
         $startDate = $appointment_obj['startDate'];
         $endDate = $appointment_obj['endDate'];
 
-        $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id);
+        $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id) || 1;
 
         $args = array('numberposts' => -1, 'post_status' => 'any', 'post_type' => 'appuntamento', 'meta_query' => array(
             array('key' => '_dci_appuntamento_unita_organizzativa_id', 'value' => $office_id),
@@ -531,7 +539,7 @@ function dci_save_appuntamento()
         if ($current >= $max_per_appuntamento) {
             wp_send_json_error(array(
                 "message" => "L'orario che hai selezionato è stato già prenotato da qualcun'altro, si prega di scegliere un altro orario",
-                "code" => 1,
+                "code" => 1
             ), 400);
             wp_die();
             return;

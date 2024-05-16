@@ -249,7 +249,24 @@ function dci_add_unita_organizzativa_metaboxes()
         )
     ));
 
-    $cmb_orari->add_field(array(
+    $fasce_orarie_group = $cmb_orari->add_field(array(
+        'id'          => $prefix . 'fasce_orarie',
+        'type'        => 'group',
+        'description' => __('Fasce orarire di apertura al pubblico', 'design_comuni_italia'),
+        'options'     => array(
+            'group_title'       => __('Fascia {#}', 'design_comuni_italia'), // since version 1.1.4, {#} gets replaced by row number
+            'add_button'        => __('Aggiungi fascia oraria', 'design_comuni_italia'),
+            'remove_button'     => __('Rimuovi fascia oraria', 'design_comuni_italia'),
+            'sortable'          => true,
+            // 'closed'         => true, // true to have the groups closed by default
+            // 'remove_confirm' => esc_html__( 'Are you sure you want to remove?', 'cmb2' ), // Performs confirmation before removing group.
+        ),
+        'attributes' => array(
+            'data-p-group' => 1
+        )
+    ));
+
+    $cmb_orari->add_group_field($fasce_orarie_group, array(
         'id'      => $prefix . 'giorni_apertura',
         'name'    => 'Giorni settimanali aperti al pubblico',
         'desc'    => 'Giorni settimanali aperti al pubblico',
@@ -268,7 +285,7 @@ function dci_add_unita_organizzativa_metaboxes()
         )
     ));
 
-    $cmb_orari->add_field(array(
+    $cmb_orari->add_group_field($fasce_orarie_group, array(
         'id'      => $prefix . 'periodo_apertura',
         'name'    => 'Periodo apertura al pubblico',
         'desc'    => 'Periodo apertura al pubblico',
@@ -278,11 +295,11 @@ function dci_add_unita_organizzativa_metaboxes()
             '2' => 'Pomeriggio',
         ),
         'attributes' => array(
-            'data-p-group' => 1
+            'cb-pa' => 1
         )
     ));
 
-    $cmb_orari->add_field(array(
+    $cmb_orari->add_group_field($fasce_orarie_group, array(
         'id'      => $prefix . 'orari_apertura_mattina',
         'name'    => 'Orario di apertura mattutino al pubblico',
         'desc'    => 'Orario di apertura mattutino al pubblico',
@@ -298,7 +315,7 @@ function dci_add_unita_organizzativa_metaboxes()
         ),
         'time_format' => 'H:i',
     ));
-    $cmb_orari->add_field(array(
+    $cmb_orari->add_group_field($fasce_orarie_group, array(
         'id'      => $prefix . 'orari_chiusura_mattina',
         'name'    => 'Orario di chiusura mattutino al pubblico',
         'desc'    => 'Orario di chiusura mattutino al pubblico',
@@ -313,7 +330,7 @@ function dci_add_unita_organizzativa_metaboxes()
         ),
         'time_format' => 'H:i',
     ));
-    $cmb_orari->add_field(array(
+    $cmb_orari->add_group_field($fasce_orarie_group, array(
         'id'      => $prefix . 'orari_apertura_pomeriggio',
         'name'    => 'Orario di apertura pomeridiano al pubblico',
         'desc'    => 'Orario di apertura pomeridiano al pubblico',
@@ -328,7 +345,7 @@ function dci_add_unita_organizzativa_metaboxes()
         ),
         'time_format' => 'H:i',
     ));
-    $cmb_orari->add_field(array(
+    $cmb_orari->add_group_field($fasce_orarie_group, array(
         'id'      => $prefix . 'orari_chiusura_pomeriggio',
         'name'    => 'Orario di chiusura pomeridiano al pubblico',
         'desc'    => 'Orario di chiusura pomeridiano al pubblico',
@@ -342,6 +359,17 @@ function dci_add_unita_organizzativa_metaboxes()
 
         ),
         'time_format' => 'H:i',
+    ));
+    $cmb_orari->add_field(array(
+        'id'      => $prefix . 'durata_appuntamento',
+        'name'    => 'Durata degli appuntamenti',
+        'desc'    => 'minuti',
+        'default' => '30',
+        'type' => 'text_small',
+        'attributes' => array(
+            'type' => 'number',
+            'data-p-group' => 1
+        ),
     ));
     $cmb_orari->add_field(array(
         'id'      => $prefix . 'max_per_appuntamento',
