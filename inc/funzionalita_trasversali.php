@@ -256,8 +256,9 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
             new DatePeriod(
                 new DateTime($date . 'T' . $orari_apertura_mattina . ':00'),
                 new DateInterval('PT' . $durata_appuntamento . 'M'),
-                new DateTime($date . 'T' . $orari_chiusura_mattina . ':01'),
+                new DateTime($date . 'T' . $orari_chiusura_mattina . ':01')
             );
+        $dates = iterator_to_array($dates);
     } else {
         $dates = [];
     }
@@ -265,13 +266,14 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
         $datesP =  new DatePeriod(
             new DateTime($date . 'T' . $orari_apertura_pomeriggio . ':00'),
             new DateInterval('PT' . $durata_appuntamento . 'M'),
-            new DateTime($date . 'T' . $orari_chiusura_pomeriggio . ':01'),
+            new DateTime($date . 'T' . $orari_chiusura_pomeriggio . ':01')
         );
+        $datesP = iterator_to_array($datesP);
     } else {
         $datesP = [];
     }
     $res = array();
-    $dates = array_merge(iterator_to_array($dates), iterator_to_array($datesP));
+    $dates = array_merge($dates, $datesP);
     $count = count($dates);
     foreach ($dates as $i => $date) {
         $d = $date->format('Y-m-d\TH:i');
