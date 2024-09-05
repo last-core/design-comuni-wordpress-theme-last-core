@@ -18,55 +18,53 @@ $other_contacts = array(
 
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
     <div class="card-body pe-3">
-        <h5 class="card-title">
-            <a href="#">
+        <h5 class="card-title text-primary">
             <?php echo $contatto->post_title; ?>
-            </a>
         </h5>
         <div class="card-text">
-            <?php if ( is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
+            <?php if (is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])) {
                 foreach ($full_contatto['indirizzo'] as $value) {
-                    echo '<p>'.$value.'</p>';
-                } 
+                    echo '<p>' . $value . '</p>';
+                }
                 echo '<p class="mt-3"></p>';
             } ?>
-            <?php if ( is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
+            <?php if (is_array($full_contatto['telefono']) && count($full_contatto['telefono'])) {
                 foreach ($full_contatto['telefono'] as $value) {
-                    echo '<p>T '.$value.'</p>';
+                    echo '<p>T ' . $value . '</p>';
                 }
             } ?>
-            <?php if ( is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
+            <?php if (is_array($full_contatto['url']) && count($full_contatto['url'])) {
                 foreach ($full_contatto['url'] as $value) { ?>
                     <p>
-                        <a 
-                        target="_blank" 
-                        aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
-                        title="vai sul sito <?php echo $value; ?>" 
-                        href="<?php echo $value; ?>">
+                        <a
+                            target="_blank"
+                            aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda"
+                            title="vai sul sito <?php echo $value; ?>"
+                            href="<?php echo $value; ?>">
                             <?php echo $value; ?>
                         </a>
                     </p>
-               <?php }
+            <?php }
             } ?>
-            <?php if ( is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
+            <?php if (is_array($full_contatto['email']) && count($full_contatto['email'])) {
                 foreach ($full_contatto['email'] as $value) { ?>
                     <p>
-                        <a  
-                        target="_blank" 
-                        aria-label="invia un'email a <?php echo $value; ?>"
-                        title="invia un'email a <?php echo $value; ?>" 
-                        href="mailto:<?php echo $value; ?>">
+                        <a
+                            target="_blank"
+                            aria-label="invia un'email a <?php echo $value; ?>"
+                            title="invia un'email a <?php echo $value; ?>"
+                            href="mailto:<?php echo $value; ?>">
                             <?php echo $value; ?>
                         </a>
                     </p>
-               <?php }
+            <?php }
             } ?>
             <?php foreach ($other_contacts as $type) {
-                if ( is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
+                if (is_array($full_contatto[$type]) && count($full_contatto[$type])) {
                     foreach ($full_contatto[$type] as $value) {
-                        echo '<p>'.$type.': '.$value.'</p>';
+                        echo '<p>' . $type . ': ' . $value . '</p>';
                     }
-                } 
+                }
             } ?>
         </div>
     </div>
