@@ -651,3 +651,60 @@ function dci_save_appuntamento()
 }
 add_action("wp_ajax_save_appuntamento", "dci_save_appuntamento");
 add_action("wp_ajax_nopriv_save_appuntamento", "dci_save_appuntamento");
+
+
+function dci_rating_list_add_export_button($which)
+{
+    global $typenow;
+    if ('rating' === $typenow && 'bottom' === $which) {
+?>
+        <input type="submit" name="export-rating-csv" class="button button-primary" value="<?php _e('Esporta CSV'); ?>"></input>
+<?php
+    }
+}
+add_action('manage_posts_extra_tablenav', 'dci_rating_list_add_export_button', 20, 1);
+function dci_export_ratings()
+{
+    $prefix = '_dci_rating_';
+    if (isset($_GET['export-rating-csv'])) {
+        $args = array(
+            'post_type' => 'rating',
+            'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash')
+        );
+
+        if (isset($_GET['post'])) {
+            $args['post__in'] = $_GET['post'];
+        } else {
+            $args['posts_per_page'] = -1;
+        }
+        global $post;
+        $arr_post = get_posts($args);
+        if ($arr_post) {
+            header('Content-type: text/csv');
+            header('Content-Disposition: attachment; filename="valutazioni-' . time() . '.csv"');
+            header('Pragma: no-cache');
+            header('Expires: 0');
+
+            $file = fopen('php://output', 'w');
+
+            fputcsv($file, array('ID', 'Titolo', 'Url Pagina', 'Stelle', 'Risposta (scelta multipla)', 'Risposta (Domanda aperta)', 'Data'), ';');
+            $count = 0;
+            $totale_stelle = 0;
+            foreach ($arr_post as $post) {
+                setup_postdata($post);
+                $url = dci_get_meta('url', $prefix, $post->ID);
+                $stelle = dci_get_meta('stelle', $prefix, $post->ID);
+                $risposta_chiusa = dci_get_meta('risposta_chiusa', $prefix, $post->ID);
+                $risposta_aperta = dci_get_meta('risposta_aperta', $prefix, $post->ID);
+                fputcsv($file, array(get_the_ID(), get_the_title(), $url, $stelle, $risposta_chiusa, $risposta_aperta, get_the_date('d/m/Y')), ';');
+                $count++;
+                $totale_stelle += $stelle;
+            }
+            fputcsv($file, array(), ';');
+            fputcsv($file, array('Media stelle', $totale_stelle / $count), ';');
+            exit();
+        }
+    }
+}
+
+add_action('admin_init', 'dci_export_ratings');
