@@ -1,20 +1,21 @@
 <?php
-global $sito_tematico_id, $count; 
+global $sito_tematico_id, $count;
 
 $sito_tematico = get_post($sito_tematico_id);
 $prefix = '_dci_sito_tematico_';
 $st_descrizione = dci_get_meta('descrizione_breve', $prefix, $sito_tematico->ID);
-$st_link = dci_get_meta('link',$prefix, $sito_tematico->ID);
-$st_colore = dci_get_meta('colore',$prefix, $sito_tematico->ID);
-$st_img = dci_get_meta('immagine',$prefix, $sito_tematico->ID);
+$st_link = dci_get_meta('link', $prefix, $sito_tematico->ID);
+$st_colore = dci_get_meta('colore', $prefix, $sito_tematico->ID);
+$st_img = dci_get_meta('immagine', $prefix, $sito_tematico->ID);
 
-if ($count % 3 == 0) $bg_color = 'blue';
-if ($count % 3 == 1) $bg_color = 'warning';
-if ($count % 3 == 2) $bg_color = 'dark';
+if ($count % 3 == 0) $bg_color = 'primary-bg-a5';
+if ($count % 3 == 1) $bg_color = 'primary-bg-a8';
+if ($count % 3 == 2) $bg_color = 'primary-bg-a11';
+$hidden = $count >= 6 ? 'hidden' : '';
 ?>
 
-<a href="<?php echo $st_link ?>" class="card card-teaser card-bg-<?php echo $bg_color; ?> rounded mt-0 p-3" target="_blank">
-    <?php if($st_img) { ?>
+<a href="<?php echo $st_link ?>" class="card card-teaser card-bg-dark <?php echo $bg_color; ?> rounded mt-0 p-3 thematic-card" target="_blank" <?php echo $hidden; ?>>
+    <?php if ($st_img) { ?>
         <div class="avatar size-lg me-3">
             <?php dci_get_img($st_img); ?>
         </div>
