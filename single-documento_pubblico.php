@@ -215,7 +215,6 @@ get_header();
                             <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                                 <?php
                                 foreach ($documenti as $documento) {
-                                    console_log($documento);
                                     if ($documento['file_documento']) {
                                         $documento_id = attachment_url_to_postid($documento['file_documento']);
                                         $_documento = get_post($documento_id);
