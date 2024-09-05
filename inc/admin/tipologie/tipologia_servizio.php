@@ -422,6 +422,20 @@ function dci_add_servizi_metaboxes()
     ));
 
     $cmb_accesso->add_field(array(
+        'id' => $prefix . 'azione_secondaria_label',
+        'name'        => __('Azione secondaria label', 'design_comuni_italia'),
+        'desc' => __('Label del bottone associato all\'azione secondaria ', 'design_comuni_italia'),
+        'type' => 'text',
+    ));
+
+    $cmb_accesso->add_field(array(
+        'id' => $prefix . 'azione_secondaria_link',
+        'name'        => __('Link azione secondaria', 'design_comuni_italia'),
+        'desc' => __('Link per il pulsante di azione secondaria. ', 'design_comuni_italia'),
+        'type' => 'text_url'
+    ));
+
+    $cmb_accesso->add_field(array(
         'id' => $prefix . 'canale_fisico_text',
         'name'        => __('Introduzione canale fisico', 'design_comuni_italia'),
         'desc' => __('Label introduttiva al canale fisico', 'design_comuni_italia'),
