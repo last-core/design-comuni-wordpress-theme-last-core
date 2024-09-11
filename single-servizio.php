@@ -93,6 +93,7 @@ get_header();
                     "name": "Dove rivolgersi"
                     <?php if (!empty($canale_digitale_link)) : ?>,
                         "serviceUrl": <?php echo json_encode($canale_digitale_link); ?>
+                    <?php else: ?> "serviceUrl": <?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>
                     <?php endif; ?>
                     <?php if (!empty($ufficio)) : ?>,
                         "serviceLocation": {
