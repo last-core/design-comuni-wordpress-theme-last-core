@@ -13,7 +13,14 @@ function borderCardRadio() {
     });
   });
 }
-
+const serviceChange = () => {
+  const id = serviceSelect?.value;
+  const name = serviceSelect?.querySelector(`[value="${id}"]`)?.innerText;
+  saveAnswerByValue("service", encodeObject({ id, name }), true);
+}
+var servizio = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+})?.servizio;
 /* Steps Page - Next and Back button */
 var content = document.querySelector(".section-wrapper");
 var currentStep = 1;
@@ -60,7 +67,6 @@ function openNext() {
   navscroll.classList.remove("d-lg-block");
   progressBar.classList.remove("d-block");
   progressBar.classList.add("d-none");
-
   if (currentStep == steps.length) {
     confirmAppointment();
     return;
@@ -87,15 +93,10 @@ function openNext() {
     if (currentStep == steps.length) {
       content.classList.remove("offset-lg-1");
     }
-
     if (currentStep == steps.length) {
       btnNext.disabled = false;
       content.querySelector(".steppers-btn-confirm span").innerHTML = "Invia";
-      btnSave.forEach(function (element) {
-        element.classList.remove("invisible");
-        element.classList.add("visible");
-        setReviews();
-      });
+      setReviews();
     }
   }
 }
@@ -246,12 +247,20 @@ officeSelect.addEventListener("change", () => {
     fetch(`${window.wpRestApi}wp/v2/servizi/ufficio?${urlParam}`)
       .then((response) => response.json())
       .then((data) => {
-        document.querySelector("#motivo-appuntamento").innerHTML =
+        if(!servizio){
+          document.querySelector("#motivo-appuntamento").innerHTML =
           '<option selected="selected" value="">Seleziona opzione</option>';
-        for (const service of data) {
+          for (const service of data) {
+            document.querySelector("#motivo-appuntamento").innerHTML += `
+            <option value="${service?.ID}">${service?.post_title}</option>
+            `;
+          }
+        } else {
+          const service = data.find((p) => p.post_name === servizio);
           document.querySelector("#motivo-appuntamento").innerHTML += `
           <option value="${service?.ID}">${service?.post_title}</option>
           `;
+          serviceChange();
         }
       })
       .catch((err) => {
@@ -414,11 +423,7 @@ validate
   ])
 /* Step 3 */
 const serviceSelect = document.getElementById("motivo-appuntamento");
-serviceSelect.addEventListener("change", () => {
-  const id = serviceSelect?.value;
-  const name = serviceSelect?.querySelector(`[value="${id}"]`)?.innerText;
-  saveAnswerByValue("service", encodeObject({ id, name }), true);
-});
+serviceSelect.addEventListener("change", serviceChange);
 
 const moreDetailsText = document.getElementById("form-details");
 moreDetailsText.addEventListener("input", () => {

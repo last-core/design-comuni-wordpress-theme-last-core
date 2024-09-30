@@ -15,7 +15,7 @@ get_header();
     <?php
     while (have_posts()) :
         the_post();
-        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
+        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), post_id: $post->ID);
 
         // prefix: _dci_servizio_
         $stato = dci_get_meta("stato");
@@ -93,7 +93,8 @@ get_header();
                     "name": "Dove rivolgersi"
                     <?php if (!empty($canale_digitale_link)) : ?>,
                         "serviceUrl": <?php echo json_encode($canale_digitale_link); ?>
-                    <?php else: ?> "serviceUrl": <?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>
+                    <?php else: ?>,
+                        "serviceUrl": <?php echo json_encode(dci_get_template_page_url('page-templates/prenota-appuntamento.php').'?servizio='.$post->post_name); ?>
                     <?php endif; ?>
                     <?php if (!empty($ufficio)) : ?>,
                         "serviceLocation": {
@@ -395,7 +396,7 @@ get_header();
                                 </button>
                             <?php } ?>
                             <p class="text-paragraph lora mt-4" data-element="service-generic-access"><?php echo $canale_fisico_text; ?></p>
-                            <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>';" data-element="service-booking-access">
+                            <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>?servizio=<?php echo $post->post_name; ?>';" data-element="service-booking-access">
                                 <span class="">Prenota appuntamento</span>
                             </button>
                         </section>

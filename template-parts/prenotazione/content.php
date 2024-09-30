@@ -1,4 +1,10 @@
 <?php
+$_servizio = get_posts(array(
+    "name" => $_GET["servizio"],
+    'posts_per_page' => 1,
+    'post_type' => 'servizio'
+));
+$servizio = count($_servizio) > 0 ? $_servizio[0] : null;
 $uffici = get_posts(array(
     'posts_per_page' => -1,
     'post_type' => 'unita_organizzativa'
@@ -66,7 +72,7 @@ for ($i = 0; $i < 12; $i++) {
                             <?php foreach ($uffici as $ufficio) {
                                 $servizi_offerti = dci_get_meta("elenco_servizi_offerti", '_dci_unita_organizzativa_', $ufficio->ID);
                                 $prenota = dci_get_meta("prenota_appuntamento", '_dci_unita_organizzativa_', $ufficio->ID);
-                                if (is_array($servizi_offerti) && count($servizi_offerti) && $prenota) {
+                                if (is_array($servizi_offerti) && count($servizi_offerti) && $prenota && ($servizio === null || in_array($servizio->ID, $servizi_offerti))) {
                                     echo '<option value="' . $ufficio->ID . '">' . $ufficio->post_title . '</option>';
                                 }
                             } ?>
