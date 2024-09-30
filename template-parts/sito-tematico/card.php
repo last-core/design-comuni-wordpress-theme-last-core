@@ -8,8 +8,8 @@ $st_link = dci_get_meta('link', $prefix, $sito_tematico->ID);
 $st_colore = dci_get_meta('colore', $prefix, $sito_tematico->ID);
 $st_img = dci_get_meta('immagine', $prefix, $sito_tematico->ID);
 
-if ($count % 3 == 0) $bg_color = 'primary-bg-a5';
-if ($count % 3 == 1) $bg_color = 'primary-bg-a8';
+if ($count % 3 == 0) $bg_color = 'primary-bg-a9';
+if ($count % 3 == 1) $bg_color = 'primary-bg-a10';
 if ($count % 3 == 2) $bg_color = 'primary-bg-a11';
 $hidden = $count >= 6 ? 'hidden' : '';
 ?>
