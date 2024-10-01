@@ -103,7 +103,8 @@ function dci_get_tassonomie_names(){
         'eventi_vita_impresa',
         'tipi_incarico',
         'stati_pratica',
-        'tipi_documento'
+        'tipi_documento',
+        'tipi_progetto_pnrr'
     );
     return $tassonomie;
 }

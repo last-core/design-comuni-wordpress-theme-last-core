@@ -191,6 +191,10 @@ function insertCustomTaxonomyTerms()
     $tipi_documento_array = dci_tipi_documento_array();
     recursionInsertTaxonomy($tipi_documento_array, 'tipi_documento');
 
+
+    $tipi_progetto_pnrr_array = dci_tipi_progetto_pnrr_array();
+    recursionInsertTaxonomy($tipi_progetto_pnrr_array, 'tipi_progetto_pnrr');
+
     /**
      * sistema di valutazione (stars)
      */

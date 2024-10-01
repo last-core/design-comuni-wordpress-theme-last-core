@@ -472,7 +472,7 @@ function dci_add_unita_organizzativa_metaboxes()
         'desc' => __('Elenco di documenti allegati alla struttura', 'design_comuni_italia'),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('documento_pubblico'),
-        'atributes' => array(
+        'attributes' => array(
             'placeholder' =>  __('Seleziona i Documenti Pubblici', 'design_comuni_italia'),
         )
     ));

@@ -715,3 +715,40 @@ if (!function_exists('dci_get_categorie_servizio_descriptions_array')) {
         return $categorie_servizio_descriptions_arr;
     }
 }
+
+if (!function_exists("dci_tipi_progetto_pnrr_array")) {
+    function dci_tipi_progetto_pnrr_array()
+    {
+        $tipi_progetto_pnrr_arr = [
+            'M1 - Digitalizzazione, innovazione, competitività, cultura e turismo' => [
+                'M1C1 - Digitalizzazione, innovazione e sicurezza nella PA',
+                'M1C2 - Digitalizzazione, innovazione e competitività nel sistema produttivo',
+                'M1C3 - Turismo e cultura 4.0'
+            ],
+            'M2 - Rivoluzione verde e transizione ecologica' => [
+                'M2C1 - Agricoltura sostenibile ed economia circolare',
+                'M2C2 - Transizione energetica e mobilità sostenibile',
+                'M2C3 - Efficienza energetica e riqualificazione degli edifici',
+                'M2C4 - Tutela del territorio e della risorsa idrica'
+            ],
+            'M3 - Infrastrutture per una mobilità sostenibile' => [
+                'M3C1 - Rete ferroviaria ad alta velocità/capacità e strade sicure',
+                'M3C2 - Intermodalità e logistica integrata'
+            ],
+            'M4 - Istruzione e ricerca' => [
+                'M4C1 - Potenziamento dell\'offerta dei servizi di istruzione: dagli asili nido alle università',
+                'M4C2 - Dalla ricerca all\'impresa'
+            ],
+            'M5 - Inclusione e coesione' => [
+                'M5C1 - Politiche per il lavoro',
+                'M5C2 - Infrastrutture sociali famiglie, comunità e terzo settore',
+                'M5C3 - Interventi speciali per la coesione territoriale',
+            ],
+            'M6 - Salute' => [
+                'M6C1 - Reti di prossimità strutture e telemedicina per l\'assistenza sanitaria territoriale',
+                'M6C2 - Innovazione, ricerca e digitalizzazione del servizio sanitario nazionale',
+            ],
+        ];
+        return $tipi_progetto_pnrr_arr;
+    }
+}

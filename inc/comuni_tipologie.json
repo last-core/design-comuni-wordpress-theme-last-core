@@ -50,6 +50,16 @@
       "group_name": "Servizi",
       "taxonomy": ["tipi_servizio", "argomenti"]
     },
+    "progetto_pnrr": {
+      "name": "progetto pnrr",
+      "capability": "progetti_pnrr",
+      "prefix": "_dci_pnrr_",
+      "singular_name": "Progetto PNRR",
+      "plural_name": "Progetti PNRR",
+      "group_id": "progetti_pnrr",
+      "group_name": "Progetti PNRR",
+      "taxonomy": ["tipi_progetto_pnrr", "argomenti"]
+    },
     "documento_pubblico": {
       "name": "documento_pubblico",
       "capability": "documenti_pubblici",

@@ -1,0 +1,16 @@
+.mission-card {
+    border-bottom: 1px solid #d3d3d3
+}
+
+.mission-card a {
+    text-decoration: none
+}
+
+.mission-card p {
+    color: #000;
+    font-weight: 200
+}
+
+.mission-card svg {
+    fill: var(--bs-link-color);
+}
