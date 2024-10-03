@@ -51,6 +51,7 @@ if (!function_exists("dci_argomenti_array")) {
             'Pesca',
             'Piano di sviluppo',
             'Pista ciclabile',
+            'PNRR',
             'Politica commerciale',
             'Polizia',
             'Prodotti alimentari',

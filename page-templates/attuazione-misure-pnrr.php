@@ -5,10 +5,19 @@
  *
  * @package Design_Comuni_Italia
  */
-global $post, $with_shadow, $data_element;
+global $post, $with_shadow, $data_element, $terms;
+$args = array(
+    'posts_per_page' => -1,
+    'post_type' => 'progetto_pnrr'
+);
+$progetti = get_posts($args);
+$terms = get_terms( array(
+    'taxonomy'   => 'tipi_progetto_pnrr',
+	'parent' => 0,
+    'hide_empty' => true
+) );
 wp_enqueue_style('dci-mission', get_template_directory_uri() . '/assets/css/mission.css', array('dci-boostrap-italia-min', 'dci-comuni'));
 get_header();
-
 ?>
 	<main>
 		<?php

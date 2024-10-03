@@ -4,6 +4,32 @@
  * Definisce post type Progetto PNRR
  */
 add_action('init', 'dci_register_post_type_progetto_pnrr', 60);
+
+function dci_get_tipi_progetti_options($field)
+{
+    $args = $field->args('get_terms_args');
+    $args = is_array($args) ? $args : array();
+
+    $args = wp_parse_args($args, array('taxonomy' => 'tipi_progetto_pnrr'));
+
+    $taxonomy = $args['taxonomy'];
+
+    $terms = (array) cmb2_utils()->wp_at_least('4.5.0')
+        ? get_terms($args)
+        : get_terms($taxonomy, $args);
+
+    // Initate an empty array
+    $term_options = array();
+    if (! empty($terms)) {
+        foreach ($terms as $term) {
+            $term_options[$term->term_id] = $term->name;
+        }
+    }
+
+    return $term_options;
+}
+
+
 function dci_register_post_type_progetto_pnrr()
 {
     /** scheda **/
@@ -56,9 +82,26 @@ add_action('cmb2_init', 'dci_add_progetto_pnrr_metaboxes');
 function dci_add_progetto_pnrr_metaboxes()
 {
     $prefix = '_dci_progetto_pnrr_';
+    $cmb_argomenti = new_cmb2_box(array(
+        'id'           => $prefix . 'box_argomenti',
+        'title'        => __('Apertura', 'design_comuni_italia'),
+        'object_types' => array('progetto_pnrr'),
+        'context'      => 'side',
+        'priority'     => 'high',
+    ));
+
+    $cmb_argomenti->add_field(array(
+        'id' => $prefix . 'argomenti',
+        'name'        => __('Argomenti', 'design_comuni_italia'),
+        'desc' => __('Argomenti relativi al progetto', 'design_comuni_italia'),
+        'type'             => 'taxonomy_multicheck_hierarchical',
+        'taxonomy'       => 'argomenti',
+        'show_option_none' => false,
+        'remove_default' => 'true',
+    ));
     $cmb_apertura = new_cmb2_box(array(
         'id'           => $prefix . 'box_apertura',
-        'title'        => __('Apertura', 'design_comuni_italia'),
+        'title'        => __('Descrizione', 'design_comuni_italia'),
         'object_types' => array('progetto_pnrr'),
         'context'      => 'normal',
         'priority'     => 'high',
@@ -88,14 +131,18 @@ function dci_add_progetto_pnrr_metaboxes()
         'id' => $prefix . 'missione',
         'name'        => __('Missione *', 'design_comuni_italia'),
         'desc' => __('Missione di cui fa parte il progetto PNRR*', 'design_comuni_italia'),
-        'type'             => 'taxonomy_select',
-        'taxonomy'       => 'tipi_progetto_pnrr',
+        'type'             => 'select',
         'show_option_none' => false,
-        'remove_default' => 'true',
-        'query_args' => array('parent' => 0),
+        'options_cb'     => 'dci_get_tipi_progetti_options',
+        // Same arguments you would pass to `get_terms`.
+        'get_terms_args' => array(
+            'taxonomy'   => 'tipi_progetto_pnrr',
+            'parent' => 0,
+            'hide_empty' => false,
+        ),
         'attributes'    => array(
             'required'    => 'required',
-        )        
+        )
     ));
     $cmb_dettagli->add_field(array(
         'id' => $prefix . 'componente',
@@ -104,7 +151,7 @@ function dci_add_progetto_pnrr_metaboxes()
         'type'             => 'taxonomy_select',
         'taxonomy'       => 'tipi_progetto_pnrr',
         'show_option_none' => false,
-        'remove_default' => 'true',
+        'remove_default' => 'false',
         'attributes'    => array(
             'required'    => 'required',
         )
@@ -120,25 +167,47 @@ function dci_add_progetto_pnrr_metaboxes()
     ));
 
     $cmb_dettagli->add_field(array(
-        'id' => $prefix . 'titolare',
-        'name'    => __('Titolare', 'design_comuni_italia'),
-        'type'    => 'text'
+        'id' => $prefix . 'intervento',
+        'name'    => __('Codice intervento *', 'design_comuni_italia'),
+        'desc' => __('Inserire il codice dell\'intervento es: 1.4.1', 'design_comuni_italia'),
+        'type'    => 'text',
+        'attributes'    => array(
+            'required'    => 'required',
+        )
     ));
     $cmb_dettagli->add_field(array(
-        'id' => $prefix . 'soggetto_attuatore',
-        'name'    => __('Soggetto attuatore', 'design_comuni_italia'),
-        'type'    => 'text'
-    ));
-    $cmb_dettagli->add_field(array(
-        'id' => $prefix . 'cup',
-        'name'    => __('CUP', 'design_comuni_italia'),
-        'type'    => 'text'
+        'id' => $prefix . 'intervento_esteso',
+        'name'    => __('Intervento esteso *', 'design_comuni_italia'),
+        'desc' => __('Inserire l\'intervento per esteso es: 1.4.1 - Esperienza del cittadino nei servizi pubblici', 'design_comuni_italia'),
+        'type'    => 'text',
+        'attributes'    => array(
+            'required'    => 'required',
+        )
     ));
 
     $cmb_dettagli->add_field(array(
+        'id' => $prefix . 'titolare',
+        'name'    => __('Titolare *', 'design_comuni_italia'),
+        'type'    => 'text',
+        'attributes'    => array(
+            'required'    => 'required',
+        )
+    ));
+    $cmb_dettagli->add_field(array(
+        'id' => $prefix . 'soggetto_attuatore',
+        'name'    => __('Soggetto attuatore *', 'design_comuni_italia'),
+        'type'    => 'text',
+        'attributes'    => array(
+            'required'    => 'required',
+        )
+    ));
+    $cmb_dettagli->add_field(array(
         'id' => $prefix . 'cup',
-        'name'    => __('CUP', 'design_comuni_italia'),
-        'type'    => 'text'
+        'name'    => __('CUP *', 'design_comuni_italia'),
+        'type'    => 'text',
+        'attributes'    => array(
+            'required'    => 'required',
+        )
     ));
 
     $cmb_importo = new_cmb2_box(array(
@@ -159,44 +228,44 @@ function dci_add_progetto_pnrr_metaboxes()
         'attributes'    => array(
             'required'    => 'required',
         )
-        ));
+    ));
 
-        $cmb_accesso = new_cmb2_box(array(
-            'id'           => $prefix . 'box_accesso',
-            'title'        => __('Accesso al finanziamento', 'design_comuni_italia'),
-            'object_types' => array('progetto_pnrr'),
-            'context'      => 'normal',
-            'priority'     => 'high',
-        ));
-    
-        $cmb_accesso->add_field(array(
-            'id'         => $prefix . 'modalita_accesso',
-            'name'       => __('Modalità di accesso al finanziamento *', 'design_comuni_italia'),
-            'desc' => __('Inserire la Modalità di accesso al finanziamento del progetto PNRR.', 'design_comuni_italia'),
-            'type'       => 'textarea',
-            'attributes'    => array(
-                'maxlength'  => '255',
-                'required'    => 'required'
-            ),
-        ));
-        $cmb_attivita = new_cmb2_box(array(
-            'id'           => $prefix . 'box_attivita',
-            'title'        => __('Attività finanziate', 'design_comuni_italia'),
-            'object_types' => array('progetto_pnrr'),
-            'context'      => 'normal',
-            'priority'     => 'high',
-        ));
-    
-        $cmb_attivita->add_field(array(
-            'id'         => $prefix . 'attivita_finanziate',
-            'name'       => __('Attività finanziate', 'design_comuni_italia'),
-            'desc' => __('Inserire la attività finanziate del progetto PNRR.', 'design_comuni_italia'),
-            'type'       => 'text',
-            'repeatable' => true,
-            'attributes'    => array(
-                'maxlength'  => '255'
-            ),
-        ));
+    $cmb_accesso = new_cmb2_box(array(
+        'id'           => $prefix . 'box_accesso',
+        'title'        => __('Accesso al finanziamento', 'design_comuni_italia'),
+        'object_types' => array('progetto_pnrr'),
+        'context'      => 'normal',
+        'priority'     => 'high',
+    ));
+
+    $cmb_accesso->add_field(array(
+        'id'         => $prefix . 'modalita_accesso',
+        'name'       => __('Modalità di accesso al finanziamento *', 'design_comuni_italia'),
+        'desc' => __('Inserire la Modalità di accesso al finanziamento del progetto PNRR.', 'design_comuni_italia'),
+        'type'       => 'textarea',
+        'attributes'    => array(
+            'maxlength'  => '255',
+            'required'    => 'required'
+        ),
+    ));
+    $cmb_attivita = new_cmb2_box(array(
+        'id'           => $prefix . 'box_attivita',
+        'title'        => __('Attività finanziate', 'design_comuni_italia'),
+        'object_types' => array('progetto_pnrr'),
+        'context'      => 'normal',
+        'priority'     => 'high',
+    ));
+
+    $cmb_attivita->add_field(array(
+        'id'         => $prefix . 'attivita_finanziate',
+        'name'       => __('Attività finanziate', 'design_comuni_italia'),
+        'desc' => __('Inserire la attività finanziate del progetto PNRR.', 'design_comuni_italia'),
+        'type'       => 'text',
+        'repeatable' => true,
+        'attributes'    => array(
+            'maxlength'  => '255'
+        ),
+    ));
     //CONTATTI
     $cmb_contatti = new_cmb2_box(array(
         'id'           => $prefix . 'box_contatti',
@@ -210,9 +279,9 @@ function dci_add_progetto_pnrr_metaboxes()
         'id' => $prefix . 'contatti',
         'name'        => __('Contatti *', 'design_comuni_italia'),
         'desc' => __('Contatti del Progetto PNRR', 'design_comuni_italia'),
-        'type'    => 'pw_multiselect',
-        'options' => dci_get_posts_options('punto_contatto'),
-        'attributes'    => array(
+        'type'    => 'pw_select',
+        'options' => dci_get_posts_options('unita_organizzativa'),
+        'attributes' => array(
             'required'    => 'required',
             'placeholder' =>  __(' Seleziona i Punti di Contatto', 'design_comuni_italia'),
         ),
