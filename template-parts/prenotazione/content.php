@@ -1,10 +1,13 @@
 <?php
-$_servizio = get_posts(array(
-    "name" => $_GET["servizio"],
-    'posts_per_page' => 1,
-    'post_type' => 'servizio'
-));
-$servizio = count($_servizio) > 0 ? $_servizio[0] : null;
+if($_GET["servizio"]){
+    $_servizio = get_posts(array(
+        "name" => $_GET["servizio"],
+        'posts_per_page' => 1,
+        'post_type' => 'servizio'
+    ));
+}
+$servizio = $_GET["servizio"] && count($_servizio) > 0 ? $_servizio[0] : null;
+var_dump($servizio);
 $uffici = get_posts(array(
     'posts_per_page' => -1,
     'post_type' => 'unita_organizzativa'
