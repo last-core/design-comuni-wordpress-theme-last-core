@@ -7,7 +7,6 @@ if($_GET["servizio"]){
     ));
 }
 $servizio = $_GET["servizio"] && count($_servizio) > 0 ? $_servizio[0] : null;
-var_dump($servizio);
 $uffici = get_posts(array(
     'posts_per_page' => -1,
     'post_type' => 'unita_organizzativa'
