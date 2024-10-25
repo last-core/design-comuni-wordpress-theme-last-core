@@ -91,7 +91,7 @@
             </svg>
             <div class="card-body pe-3">
                 <h3 class="card-title h5">
-                    <a href="<?php echo get_permalink($ufficio->ID); ?>">
+                    <a href="<?php echo get_permalink($ufficio->ID); ?>" data-element="service-area">
                         <?php echo $ufficio->post_title; ?>
                     </a>
                 </h5>
