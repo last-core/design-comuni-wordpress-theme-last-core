@@ -554,7 +554,7 @@ class Breadcrumb_Trail
 					} else if (is_tax(array("argomenti"))) {
 						$this->items[] = "<a href='" . home_url("argomenti") . "'>" . __("Argomenti", "design_comuni_italia") . "</a>";
 						$this->items[] = single_term_title('', false);
-					} else if (is_tax(array("tipi_documento"))) {
+					} else if (is_tax(array("tipi_documento")) || is_tax(array("tipi_doc_albo_pretorio"))) {
 						$this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 						$this->items[] = "<a href='" . home_url("documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
 						$term_name = single_term_title('', false);
