@@ -40,7 +40,9 @@ jQuery( document ).ready(function() {
         }
 
         return true;
-    })
+    });
+    dci_show_hide_mensa();
+    jQuery('input[name="_dci_luogo_tipo_luogo[]"').change(() => dci_show_hide_mensa());
 });
 
 function dci_highlight_missing_field(fieldClass) {
@@ -59,4 +61,13 @@ function dci_highlight_missing_field(fieldClass) {
 function dci_remove_highlight_missing_field(fieldClass) {
     jQuery(fieldClass).removeClass("highlighted_missing_field");
     jQuery('.field-required-msg').remove();
+}
+
+function dci_show_hide_mensa(){
+    const val = jQuery('input[name="_dci_luogo_tipo_luogo[]"][value="scuola"]')?.[0]?.checked;
+    if(val){
+    jQuery('.cmb2-id--dci-luogo-presenza-mensa').show();
+    } else {
+    jQuery('.cmb2-id--dci-luogo-presenza-mensa').hide();
+    }
 }

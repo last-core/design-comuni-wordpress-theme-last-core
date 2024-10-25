@@ -227,6 +227,7 @@ function dci_add_luogo_metaboxes()
         'object_types' => array('luogo'),
         'context'      => 'normal',
         'priority'     => 'high',
+        'show_in_rest' => WP_REST_Server::READABLE
     ));
 
     $cmb_servizi->add_field(array(
@@ -239,8 +240,19 @@ function dci_add_luogo_metaboxes()
             'textarea_rows' => 10, // rows="..."
             'teeny' => false, // output the minimal editor config used in Press This
         ),
+        'show_in_rest' => false
     ));
 
+    $cmb_servizi->add_field( array(
+        'name'    => __( 'Istituto con mensa', 'design_comuni_italia' ),
+        'id'      => $prefix . 'presenza_mensa',
+        'type'    => 'radio',
+        'options' => array(
+            0 => 'No',
+            1 => 'Sì',
+        ),
+        'show_in_rest' => WP_REST_Server::READABLE
+    ) );
 
     //MODALITA' DI ACCESSO
     $cmb_accesso = new_cmb2_box(array(
