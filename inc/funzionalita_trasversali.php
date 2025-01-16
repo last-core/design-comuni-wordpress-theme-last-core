@@ -586,6 +586,7 @@ function dci_save_appuntamento()
         $office_obj = json_decode(stripslashes($params['office']), true);
         $office_id = $office_obj['id'];
         $ufficio_email = dci_get_meta("email_prenotazione", "_dci_unita_organizzativa_", $office_id);
+        $testo_email = dci_get_meta("testo_email_prenotazione", "_dci_unita_organizzativa_", $office_id);
         update_post_meta($postId, '_dci_appuntamento_unita_organizzativa', $office_obj['name']);
         update_post_meta($postId, '_dci_appuntamento_unita_organizzativa_id', $office_id);
     }
@@ -602,6 +603,10 @@ function dci_save_appuntamento()
 
     $email_assistenza = dci_get_option('email_assistenza', 'assistenza');
     $body_user = "Gentile {$params['surname']} {$params['name']} la sua richiesta di appuntamento è stata correttamente inviata.";
+    if($testo_email) {
+        $body_user .= "<br>";
+        $body_user .= $testo_email;
+    }
     $body_admin = "Gentile gestore, è stata inoltrata una nuova richiesta di appuntamento, di seguente i dati: <br>";
     $body_admin .= "<ul>";
     $labels = array(

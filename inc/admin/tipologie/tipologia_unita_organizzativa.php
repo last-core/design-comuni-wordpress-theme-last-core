@@ -248,6 +248,15 @@ function dci_add_unita_organizzativa_metaboxes()
             'data-p-group' => 1
         )
     ));
+    $cmb_orari->add_field(array(
+        'id'      => $prefix . 'testo_email_prenotazione',
+        'name'    => 'Testo email prenotazione appuntamento',
+        'desc'    => 'Testo che comparirà a seguito del testo standard dell\'email inviata al cittadino, ovvero "Gentile <Nome completo> la sua richiesta di appuntamento è stata correttamente inviata. <Testo email prenotazione appuntamento>"',
+        'type'    => 'textarea',
+        'attributes' => array(
+            'data-p-group' => 1
+        )
+    ));
 
     $fasce_orarie_group = $cmb_orari->add_field(array(
         'id'          => $prefix . 'fasce_orarie',
