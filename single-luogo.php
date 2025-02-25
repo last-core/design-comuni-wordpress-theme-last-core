@@ -21,7 +21,6 @@ get_header();
          */
         $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
         $prefix = "_dci_luogo_";
-
         $immagine = dci_get_meta("immagine", $prefix, $post->ID);
         $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
         $nome_alternativo = dci_get_meta("nome_alternativo", $prefix, $post->ID);
@@ -210,11 +209,13 @@ get_header();
                                 </div>
                             </section>
                         <?php } ?>
+                        <?php if ($servizi) { ?>
                         <section id="servizi" class="it-page-section mb-4">
                             <h3 class="my-2 title-large-semi-bold">Servizi offerti</h3>
                             <div class="richtext-wrapper lora">
                                 <?php echo $servizi ?>
                             </div>
+                        <?php } ?>
                         </section>
                         <section id="modalita-accesso" class="it-page-section mb-4">
                             <h3 class="my-2 title-large-semi-bold">Modalità di accesso</h3>

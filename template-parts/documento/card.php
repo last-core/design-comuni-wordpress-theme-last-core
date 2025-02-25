@@ -7,7 +7,7 @@ global $documento;
 	</svg>
 	<div class="card-body">
 		<h5 class="card-title">
-			<a href="<?php echo get_permalink($documento->ID); ?>">
+			<a href="<?php echo dci_url_to_https(get_permalink($documento->ID)); ?>">
 				<?php echo $documento->post_title; ?>
 			</a>
 		</h5>

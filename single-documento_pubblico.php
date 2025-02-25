@@ -225,7 +225,7 @@ get_header();
                                             </svg>
                                             <div class="card-body">
                                                 <h5 class="card-title">
-                                                    <a class="text-decoration-none" href="<?php echo $documento['file_documento']; ?>" aria-label="Scarica il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
+                                                    <a class="text-decoration-none" href="<?php echo dci_url_to_https($documento['file_documento']); ?>" aria-label="Scarica il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
                                                         <?php echo $_documento->post_title; ?>
                                                     </a>
                                                 </h5>
@@ -239,7 +239,7 @@ get_header();
                                             </svg>
                                             <div class="card-body">
                                                 <h5 class="card-title">
-                                                    <a class="text-decoration-none" href="<?php echo $documento['url_documento']; ?>" aria-label="Scarica il documento" title="Scarica il documento">
+                                                    <a class="text-decoration-none" href="<?php echo dci_url_to_https($documento['url_documento']); ?>" aria-label="Scarica il documento" title="Scarica il documento">
                                                         Scarica il documento
                                                     </a>
                                                 </h5>
