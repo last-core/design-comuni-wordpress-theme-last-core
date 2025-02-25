@@ -602,7 +602,7 @@ function dci_save_appuntamento()
     }
 
     $email_assistenza = dci_get_option('email_assistenza', 'assistenza');
-    $body_user = "Gentile {$params['surname']} {$params['name']} la sua richiesta di appuntamento è stata correttamente inviata.";
+    $body_user = "Gentile {$params['surname']} {$params['name']} il suo appuntamento è confermato per {$startDateF}.";
     if($testo_email) {
         $body_user .= "<br>";
         $body_user .= $testo_email;
