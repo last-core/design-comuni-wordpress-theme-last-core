@@ -235,12 +235,14 @@ get_header();
                             get_template_part("template-parts/luogo/map");
                             ?>
                         </section>
+                        <?php if($orario_pubblico){ ?>
                         <section id="orario-pubblico" class="it-page-section mb-4">
                             <h3 class="my-2 title-large-semi-bold">Orario per il pubblico</h3>
                             <div class="richtext-wrapper lora">
                                 <?php echo $orario_pubblico ?>
                             </div>
                         </section>
+                        <?php } ?>
                         <?php if ($punti_contatto && is_array($punti_contatto) && count($punti_contatto) > 0) { ?>
                             <section id="contatti" class="it-page-section mb-4">
                                 <h3 class="my-2 title-large-semi-bold">Contatti</h3>
