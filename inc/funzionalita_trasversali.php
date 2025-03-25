@@ -241,7 +241,7 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
     $orari_apertura_pomeriggio = $has_pomeriggio && $fasce_orarie['_dci_unita_organizzativa_orari_apertura_pomeriggio'] ? $fasce_orarie['_dci_unita_organizzativa_orari_apertura_pomeriggio']  : null;
     $orari_chiusura_pomeriggio = $has_pomeriggio && $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_pomeriggio']  ? $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_pomeriggio']  : null;
     $durata_appuntamento = dci_get_meta("durata_appuntamento", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("durata_appuntamento", '_dci_unita_organizzativa_', $office_id) : 30;
-    $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id) || 1;
+    $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id) ? intval(dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id)) : 1;
     $args = array('numberposts' => -1, 'post_status' => 'any', 'post_type' => 'appuntamento', 'meta_query' => array(
         array('key' => '_dci_appuntamento_unita_organizzativa_id', 'value' => $office_id),
         array('key' => '_dci_appuntamento_data_ora_inizio_appuntamento', 'value' =>  $date, 'compare' => 'LIKE')
@@ -279,7 +279,7 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
     $countP = count($datesP);
     foreach ($dates as $i => $date) {
         $d = $date->format('Y-m-d\TH:i');
-        if (isset($res[$i - 1])) {
+        if (isset($res[$i - 1]) && $i !== 0) {
             $res[$i - 1]['end_time'] = $d;
         }
         if (isset($prenotazioni_selected[$d]) && $prenotazioni_selected[$d] >= $max_per_appuntamento) continue;
@@ -289,15 +289,15 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
     }
     foreach ($datesP as $i => $date) {
         $d = $date->format('Y-m-d\TH:i');
-        if (isset($res[ $count - 1 + $i - 1]) && $i !== 0) {
-            $res[$count - 1 + $i - 1]['end_time'] = $d;
+        $offset = $count === 0 ? 0 : $count - 1;
+        if (isset($res[ $offset + $i - 1]) && $i !== 0) {
+            $res[$offset + $i - 1]['end_time'] = $d;
         }
         if (isset($prenotazioni_selected[$d]) && $prenotazioni_selected[$d] >= $max_per_appuntamento) continue;
         if ($countP - 2 >= $i) {
-            $res[$count - 1 + $i] = array('start_time' => $d);
+            $res[$offset + $i] = array('start_time' => $d);
         }
     }
-
     return array_slice($res, 0);
 }
 
