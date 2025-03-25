@@ -30,7 +30,7 @@ get_header();
 
         // prefix: _dci_servizio_
         $stato = dci_get_meta("stato");
-        // $motivo_stato = dci_get_meta("motivo_stato");
+        $motivo_stato = dci_get_meta("motivo_stato");
         $sottotitolo = dci_get_meta("sottotitolo");
         $descrizione_breve = dci_get_meta("descrizione_breve");
         $destinatari = dci_get_wysiwyg_field("a_chi_e_rivolto");
@@ -153,7 +153,12 @@ get_header();
                                 <p class="subtitle-small mb-3" data-element="service-description">
                                     <?php echo $descrizione_breve ?>
                                 </p>
-                                <?php if ($canale_digitale_link) { ?>
+                                <?php if ($stato == 'false') { ?>
+                                    <div class="alert alert-warning my-md-4 my-lg-4">
+                                        <?php echo $motivo_stato; ?>
+                                    </div>
+                                <?php } ?>
+                                <?php if ($stato == 'true' && $canale_digitale_link) { ?>
                                     <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
                                         <span class=""><?php echo $canale_digitale_label; ?></span>
                                     </button>
@@ -249,12 +254,12 @@ get_header();
                                                                     </a>
                                                                 </li>
                                                             <?php } ?>
-                                                            <?php if($canale_digitale_link || $has_prenotazione){ ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#submit-request">
-                                                                    <span class="title-medium">Accedi al servizio</span>
-                                                                </a>
-                                                            </li>
+                                                            <?php if (($canale_digitale_link || $has_prenotazione) && $stato  == 'true') { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#submit-request">
+                                                                        <span class="title-medium">Accedi al servizio</span>
+                                                                    </a>
+                                                                </li>
                                                             <?php } ?>
                                                             <?php if ($more_info) { ?>
                                                                 <li class="nav-item">
@@ -400,22 +405,22 @@ get_header();
                                 <div class="richtext-wrapper lora" data-element="service-cost"><?php echo $costi ?></div>
                             </section>
                         <?php } ?>
-                        <?php if($canale_digitale_link || $has_prenotazione){ ?>
-                        <section class="it-page-section mb-30 has-bg-grey p-4">
-                            <h2 class="mb-3" id="submit-request">Accedi al servizio</h2>
-                            <?php if ($canale_digitale_link) { ?>
-                                <p class="text-paragraph lora mb-4" data-element="service-generic-access"><?php echo $canale_digitale_text; ?></p>
-                                <button type="button" class="btn btn-primary mobile-full" onclick="location.href='<?php echo $canale_digitale_link; ?>';" data-element="service-online-access">
-                                    <span class=""><?php echo $canale_digitale_label; ?></span>
-                                </button>
-                            <?php } ?>
-                            <?php if ($has_prenotazione) { ?>
-                            <p class="text-paragraph lora mt-4" data-element="service-generic-access"><?php echo $canale_fisico_text; ?></p>
-                            <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>?servizio=<?php echo $post->post_name; ?>';" data-element="service-booking-access">
-                                <span class="">Prenota appuntamento</span>
-                            </button>
-                            <?php } ?>
-                        </section>
+                        <?php if (($canale_digitale_link || $has_prenotazione) && $stato  == 'true') { ?>
+                            <section class="it-page-section mb-30 has-bg-grey p-4">
+                                <h2 class="mb-3" id="submit-request">Accedi al servizio</h2>
+                                <?php if ($canale_digitale_link && $stato  == 'true') { ?>
+                                    <p class="text-paragraph lora mb-4" data-element="service-generic-access"><?php echo $canale_digitale_text; ?></p>
+                                    <button type="button" class="btn btn-primary mobile-full" onclick="location.href='<?php echo $canale_digitale_link; ?>';" data-element="service-online-access">
+                                        <span class=""><?php echo $canale_digitale_label; ?></span>
+                                    </button>
+                                <?php } ?>
+                                <?php if ($has_prenotazione) { ?>
+                                    <p class="text-paragraph lora mt-4" data-element="service-generic-access"><?php echo $canale_fisico_text; ?></p>
+                                    <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>?servizio=<?php echo $post->post_name; ?>';" data-element="service-booking-access">
+                                        <span class="">Prenota appuntamento</span>
+                                    </button>
+                                <?php } ?>
+                            </section>
                         <?php } ?>
                         <?php if ($more_info) {  ?>
                             <section class="it-page-section mb-30">
