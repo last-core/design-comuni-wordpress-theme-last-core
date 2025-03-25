@@ -441,6 +441,11 @@ surnameInput.addEventListener("input", () => {
   saveAnswerByValue("surname", surnameInput?.value);
 });
 
+const telefonoInput = document.getElementById("telefono");
+telefonoInput.addEventListener("input", () => {
+  saveAnswerByValue("telefono", telefonoInput?.value);
+});
+
 const emailInput = document.getElementById("email");
 emailInput.addEventListener("input", () => {
   validate.revalidateField('#email');
@@ -478,6 +483,7 @@ const setReviews = () => {
   document.getElementById("review-details").innerHTML = answers?.moreDetails;
   document.getElementById("review-name").innerHTML = answers?.name;
   document.getElementById("review-surname").innerHTML = answers?.surname;
+  document.getElementById("review-telefono").innerHTML = answers?.telefono;
   document.getElementById("review-email").innerHTML = answers?.email;
 };
 

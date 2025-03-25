@@ -80,6 +80,16 @@ function dci_add_appuntamento_metaboxes()
     ));
 
     $cmb_dati->add_field(array(
+        'id' => $prefix . 'telefono_richiedente',
+        'desc' => __('Telefono del richiedente', 'design_comuni_italia'),
+        'name'  => __('Telefono Richiedente', 'design_comuni_italia'),
+        'type' => 'text',
+        'attributes'    => array(
+            'readonly' => true
+        ),
+    ));
+
+    $cmb_dati->add_field(array(
         'id' => $prefix . 'email_richiedente',
         'desc' => __('Email del richiedente', 'design_comuni_italia'),
         'name'  => __('Email Richiedente *', 'design_comuni_italia'),
@@ -201,6 +211,7 @@ function dci_filter_appuntamento_columns($columns)
 {
 
     $columns['email_richiedente'] = __('Email Richiedente', 'design_comuni_italia');
+    $columns['telefono_richiedente'] = __('Telefono Richiedente', 'design_comuni_italia');
     $columns['servizio'] = __('Servizio', 'design_comuni_italia');
     $columns['ufficio'] = __('Ufficio', 'design_comuni_italia');
     $columns['data_ora_inizio'] = __('Data e ora inizio', 'design_comuni_italia');
@@ -217,6 +228,10 @@ add_filter('manage_appuntamento_posts_columns', 'dci_filter_appuntamento_columns
  */
 function dci_manage_appuntamento_posts_custom_column($column, $post_id)
 {
+
+    if ('telefono_richiedente' === $column) {
+        echo get_post_meta($post_id, '_dci_appuntamento_telefono_richiedente', true);
+    }
 
     if ('email_richiedente' === $column) {
         echo get_post_meta($post_id, '_dci_appuntamento_email_richiedente', true);
@@ -262,6 +277,7 @@ function dci_save_appuntamento_columns($columns)
         'cb' => $columns['cb'],
         'title' => $columns['title'],
         'email_richiedente' => $columns['email_richiedente'],
+        'telefono_richiedente' => $columns['telefono_richiedente'],
         'servizio' => $columns['servizio'],
         'ufficio' => $columns['ufficio'],
         'data_ora_inizio' => $columns['data_ora_inizio'],
@@ -281,6 +297,7 @@ add_filter('manage_appuntamento_posts_columns', 'dci_save_appuntamento_columns')
 function dci_appuntamento_sortable_columns($columns)
 {
 
+    $columns['telefono_richiedente'] = 'appuntamento_telefono_richiedente';
     $columns['email_richiedente'] = 'appuntamento_email_richiedente';
     $columns['servizio'] = 'appuntamento_servizio';
     $columns['ufficio'] = 'appuntamento_ufficio';
@@ -297,6 +314,11 @@ function dci_appuntamento_posts_orderby($query)
 {
     if (!is_admin() || !$query->is_main_query()) {
         return;
+    }
+
+    if ('appuntamento_telefono_richiedente' === $query->get('orderby')) {
+        $query->set('orderby', 'meta_value');
+        $query->set('meta_key', '_dci_appuntamento_telefono_richiedente');
     }
 
     if ('appuntamento_email_richiedente' === $query->get('orderby')) {

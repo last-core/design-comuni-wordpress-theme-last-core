@@ -568,6 +568,10 @@ function dci_save_appuntamento()
 
     update_post_meta($postId, '_dci_appuntamento_data_ora_prenotazione',  $data);
 
+    if (array_key_exists("telefono", $params) && $params['telefono'] != "null") {
+        update_post_meta($postId, '_dci_appuntamento_telefono_richiedente',  $params['telefono']);
+    }
+
     if (array_key_exists("email", $params) && $params['email'] != "null") {
         update_post_meta($postId, '_dci_appuntamento_email_richiedente',  $params['email']);
     }
@@ -613,6 +617,7 @@ function dci_save_appuntamento()
         'name' => 'Nome',
         'surname' => 'Cognome',
         'email' => 'Email',
+        'telefono' => 'Telefono',
         'service' => 'Servizio',
         'office' => 'Ufficio',
         'appointment' => 'Appuntamento',

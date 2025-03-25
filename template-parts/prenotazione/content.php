@@ -242,6 +242,18 @@ for ($i = 0; $i < 12; $i++) {
                                 </span>
                             </div>
                         </div>
+
+                        <div class="form-group cmp-input mb-0">
+                            <label class="cmp-input__label" for="telefono">
+                                Telefono
+                            </label>
+                            <input type="text" class="form-control" id="telefono" name="telefono" />
+                            <div class="d-flex">
+                                <span class="form-text cmp-input__text">
+                                    Inserisci il tuo numero di telefono
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -384,6 +396,12 @@ for ($i = 0; $i < 12; $i++) {
                                         <div class="text-paragraph-small">Email</div>
                                         <div class="border-light">
                                             <p class="data-text" id="review-email"></p>
+                                        </div>
+                                    </div>
+                                    <div class="single-line-info border-light">
+                                        <div class="text-paragraph-small">Telefono</div>
+                                        <div class="border-light">
+                                            <p class="data-text" id="review-telefono"></p>
                                         </div>
                                     </div>
                                 </div>
