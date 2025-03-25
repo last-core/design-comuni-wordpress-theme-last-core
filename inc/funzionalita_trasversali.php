@@ -234,10 +234,12 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
         return in_array($week_day, $item['_dci_unita_organizzativa_giorni_apertura']);
     });
     $fasce_orarie = count($fasce_orarie) !== 0 ? array_values($fasce_orarie)[0] : [];
-    $orari_apertura_mattina = $fasce_orarie['_dci_unita_organizzativa_orari_apertura_mattina'] ? $fasce_orarie['_dci_unita_organizzativa_orari_apertura_mattina'] : null;
-    $orari_chiusura_mattina = $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_mattina'] ? $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_mattina'] : null;
-    $orari_apertura_pomeriggio = $fasce_orarie['_dci_unita_organizzativa_orari_apertura_pomeriggio'] ? $fasce_orarie['_dci_unita_organizzativa_orari_apertura_pomeriggio']  : null;
-    $orari_chiusura_pomeriggio = $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_pomeriggio']  ? $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_pomeriggio']  : null;
+    $has_mattina = is_array($fasce_orarie['_dci_unita_organizzativa_periodo_apertura']) && in_array('1', $fasce_orarie['_dci_unita_organizzativa_periodo_apertura']) || $fasce_orarie['_dci_unita_organizzativa_periodo_apertura'] == '1';
+    $has_pomeriggio = is_array($fasce_orarie['_dci_unita_organizzativa_periodo_apertura']) && in_array('2', $fasce_orarie['_dci_unita_organizzativa_periodo_apertura']) || $fasce_orarie['_dci_unita_organizzativa_periodo_apertura'] == '2';
+    $orari_apertura_mattina = $has_mattina &&  $fasce_orarie['_dci_unita_organizzativa_orari_apertura_mattina'] ? $fasce_orarie['_dci_unita_organizzativa_orari_apertura_mattina'] : null;
+    $orari_chiusura_mattina = $has_mattina && $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_mattina'] ? $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_mattina'] : null;
+    $orari_apertura_pomeriggio = $has_pomeriggio && $fasce_orarie['_dci_unita_organizzativa_orari_apertura_pomeriggio'] ? $fasce_orarie['_dci_unita_organizzativa_orari_apertura_pomeriggio']  : null;
+    $orari_chiusura_pomeriggio = $has_pomeriggio && $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_pomeriggio']  ? $fasce_orarie['_dci_unita_organizzativa_orari_chiusura_pomeriggio']  : null;
     $durata_appuntamento = dci_get_meta("durata_appuntamento", '_dci_unita_organizzativa_', $office_id) ? dci_get_meta("durata_appuntamento", '_dci_unita_organizzativa_', $office_id) : 30;
     $max_per_appuntamento = dci_get_meta("max_per_appuntamento", '_dci_unita_organizzativa_', $office_id) || 1;
     $args = array('numberposts' => -1, 'post_status' => 'any', 'post_type' => 'appuntamento', 'meta_query' => array(
@@ -273,8 +275,8 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
         $datesP = [];
     }
     $res = array();
-    $dates = array_merge($dates, $datesP);
     $count = count($dates);
+    $countP = count($datesP);
     foreach ($dates as $i => $date) {
         $d = $date->format('Y-m-d\TH:i');
         if (isset($res[$i - 1])) {
@@ -283,6 +285,16 @@ function dci_get_prenotazioni_orari(WP_REST_Request $request)
         if (isset($prenotazioni_selected[$d]) && $prenotazioni_selected[$d] >= $max_per_appuntamento) continue;
         if ($count - 2 >= $i) {
             $res[$i] = array('start_time' => $d);
+        }
+    }
+    foreach ($datesP as $i => $date) {
+        $d = $date->format('Y-m-d\TH:i');
+        if (isset($res[ $count - 1 + $i - 1]) && $i !== 0) {
+            $res[$count - 1 + $i - 1]['end_time'] = $d;
+        }
+        if (isset($prenotazioni_selected[$d]) && $prenotazioni_selected[$d] >= $max_per_appuntamento) continue;
+        if ($countP - 2 >= $i) {
+            $res[$count - 1 + $i] = array('start_time' => $d);
         }
     }
 
