@@ -517,6 +517,7 @@ function dci_add_servizi_metaboxes()
         'object_types' => array('servizio'),
         'context'      => 'normal',
         'priority'     => 'high',
+        'show_in_rest' => WP_REST_Server::READABLE,
     ));
 
     $cmb_condizioni_servizio->add_field(
@@ -527,7 +528,8 @@ function dci_add_servizi_metaboxes()
             'type' => 'file',
             'attributes' => array(
                 'required' => 'required'
-            )
+            ),
+            'show_in_rest' => WP_REST_Server::READABLE,
         )
     );
 

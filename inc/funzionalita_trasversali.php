@@ -128,6 +128,36 @@ function dci_get_servizi_ufficio(WP_REST_Request $request)
 
     return $servizi;
 }
+function dci_register_servizi_featured_route()
+{
+    register_rest_route('wp/v2', '/servizi/featured/', array(
+        'methods' => 'GET',
+        'callback' => 'dci_get_servizi_featured'
+    ));
+}
+add_action('rest_api_init', 'dci_register_servizi_featured_route');
+
+/**
+ * @param WP_REST_Request $request
+ * @return array[]
+ */
+function dci_get_servizi_featured()
+{
+
+    $servizi_ids = array();
+    $servizi_ids = dci_get_option('servizi_evidenziati','servizi');
+    $servizi = array();
+    if (!empty($servizi_ids)) {
+        $servizi = get_posts([
+            'post_type' => 'servizio',
+            'post_status' => 'publish',
+            'numberposts' => -1,
+            'post__in' => $servizi_ids,
+            'order_by' => 'post__in'
+        ]);
+    }
+    return $servizi;
+}
 
 function dci_register_prenotazioni_date_route()
 {
