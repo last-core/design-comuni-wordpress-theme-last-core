@@ -53,6 +53,7 @@ get_header();
         $azione_secondaria_link = dci_get_meta("azione_secondaria_link");
         $canale_fisico_text = dci_get_meta("canale_fisico_text");
         $canale_fisico_uffici = dci_get_meta("canale_fisico_uffici");
+        $documenti = dci_get_meta("documenti");  
         $contatti = dci_get_meta("punti_contatto");
 
         $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
@@ -275,6 +276,12 @@ get_header();
                                                                     </a>
                                                                 </li>
                                                             <?php } ?>
+                                                            <?php if( is_array(value: $documenti) && count($documenti) ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#documenti"><span class="title-medium">Documenti</span></a
+                                                                    >
+                                                                </li>
+                                                            <?php } ?>
                                                             <?php if (is_array($contatti) && count($contatti)) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#contacts">
@@ -442,7 +449,17 @@ get_header();
                                 <?php get_template_part("template-parts/single/attachment"); ?>
                             </section>
                         <?php } ?>
-
+                        <?php if( is_array($documenti) && count($documenti) ) { ?>
+                    <article id="documenti" class="it-page-section mb-30">
+                    <h2 class="title-xxlarge mb-3" id="documents">Documenti</h2>
+                    <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-2">
+                            <?php foreach ($documenti as $doc_id) { 
+                                $documento = get_post($doc_id);
+                                get_template_part("template-parts/documento/card");
+                            } ?>
+                        </div>
+                    </article>
+                    <?php } ?>
                         <section class="it-page-section">
                             <?php if (is_array($contatti) && count($contatti)) { ?>
                                 <h2 class="mb-3" id="contacts">Contatti</h2>
