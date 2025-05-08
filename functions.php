@@ -72,6 +72,11 @@ require get_template_directory() . '/inc/gutenberg.php';
 require get_template_directory() . '/inc/welcome.php';
 
 /**
+ * Schedule
+ */
+require get_template_directory() . '/inc/schedule.php';
+
+/**
  * main menu walker
  */
 require get_template_directory() . '/walkers/main-menu.php';
