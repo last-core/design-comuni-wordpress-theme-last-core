@@ -8,7 +8,7 @@
  * @package Design_Comuni_Italia
  */
 $colore = dci_get_option("colore_tema");
-$colore = $colore === 1 || !$colore ? '' : $colore;
+$colore = (string) $colore === '1' || !$colore ? '' : (string) $colore;
 get_header();
 ?>
 <main id="main-container" class="main-container redbrown">
