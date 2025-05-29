@@ -42,7 +42,6 @@ function dci_register_header_options()
             '1'   => __('Nascondi', 'cmb2'),
         ),
         'default' => '0',
-
     ));
 
     $header_options->add_field(array(
@@ -63,5 +62,53 @@ function dci_register_header_options()
         'name'        => __('URL Area riservata', 'design_comuni_italia'),
         'desc'        => __('Link alla Area riservata', 'design_comuni_italia'),
         'type' => 'text_url',
+    ));
+
+    $header_options->add_field(array(
+        'id'   => $prefix . 'area_riservata_opencity',
+        'name' => __('Attiva pulsante Area Riservata Opencity', 'design_comuni_italia'),
+        'desc' => __('Attiva pulsante Area Riservata Opencity', 'design_comuni_italia'),
+        'type'    => 'radio_inline',
+        'options' => array(
+            '0' => __('No', 'cmb2'),
+            '1'   => __('Sì', 'cmb2'),
+        ),
+        'default' => '0',
+    ));
+
+        $header_options->add_field(array(
+        'id' => $prefix . 'area_riservata_oc_base_url',
+        'name'        => __('URL base Area Riservata Opencity', 'design_comuni_italia'),
+        'desc'        => __('URL base Area Riservata Opencity', 'design_comuni_italia'),
+        'type' => 'text_url',
+        'show_on'      => array('key' => $prefix . 'area_riservata_opencity', 'value' => '1'),
+    ));
+
+        $header_options->add_field(array(
+        'id' => $prefix . 'area_riservata_oc_auth_url',
+        'name'        => __('URL di login Area Riservata Opencity', 'design_comuni_italia'),
+        'desc'        => __('URL di login Area Riservata Opencity', 'design_comuni_italia'),
+        'type' => 'text_url',
+        'show_on'      => array('key' => $prefix . 'area_riservata_opencity', 'value' => '1'),
+    ));
+
+        $header_options->add_field(array(
+        'id' => $prefix . 'area_riservata_oc_spid_button',
+        'name'        => __('Login tramite popup Opencity', 'design_comuni_italia'),
+        'desc'        => __('Login tramite popup Opencity', 'design_comuni_italia'),
+        'type'    => 'radio_inline',
+        'show_on'      => array('key' => $prefix . 'area_riservata_opencity', 'value' => '1'),
+        'options' => array(
+            'false' => __('No', 'cmb2'),
+            'true'   => __('Sì', 'cmb2'),
+        ),
+        'default' => 'false',
+    ));
+        $header_options->add_field(array(
+        'id' => $prefix . 'area_riservata_oc_auth_label',
+        'name'        => __('Etichetta Login Opencity', 'design_comuni_italia'),
+        'desc'        => __('Etichetta Login Opencity', 'design_comuni_italia'),
+        'type' => 'text',
+        'show_on'      => array('key' => $prefix . 'area_riservata_opencity', 'value' => '1'),
     ));
 }

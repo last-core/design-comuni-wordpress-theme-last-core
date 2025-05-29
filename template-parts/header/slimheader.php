@@ -41,11 +41,16 @@
             <?php
             }
             $area_riservata_hide = dci_get_option("area_riservata_hide", "header");
+            $oc_button = dci_get_option("area_riservata_opencity", "header");
             if (!$area_riservata_hide) {
-              if (!is_user_logged_in()) {
-                get_template_part("template-parts/header/header-anon");
+              if (!$oc_button) {
+                if (!is_user_logged_in()) {
+                  get_template_part("template-parts/header/header-anon");
+                } else {
+                  get_template_part("template-parts/header/header-logged");
+                }
               } else {
-                get_template_part("template-parts/header/header-logged");
+                get_template_part("template-parts/header/header-opencity");
               }
             }
             ?>
