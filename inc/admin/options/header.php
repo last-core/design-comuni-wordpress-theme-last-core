@@ -81,7 +81,10 @@ function dci_register_header_options()
         'name'        => __('URL base Area Riservata Opencity', 'design_comuni_italia'),
         'desc'        => __('URL base Area Riservata Opencity', 'design_comuni_italia'),
         'type' => 'text_url',
-        'show_on'      => array('key' => $prefix . 'area_riservata_opencity', 'value' => '1'),
+        'attributes'    => array(
+            'data-conditional-id'     => $prefix.'area_riservata_opencity',
+            'data-conditional-value'  => "1",
+        ),
     ));
 
         $header_options->add_field(array(
@@ -89,7 +92,10 @@ function dci_register_header_options()
         'name'        => __('URL di login Area Riservata Opencity', 'design_comuni_italia'),
         'desc'        => __('URL di login Area Riservata Opencity', 'design_comuni_italia'),
         'type' => 'text_url',
-        'show_on'      => array('key' => $prefix . 'area_riservata_opencity', 'value' => '1'),
+        'attributes'    => array(
+            'data-conditional-id'     => $prefix.'area_riservata_opencity',
+            'data-conditional-value'  => "1",
+        ),
     ));
 
         $header_options->add_field(array(
@@ -97,7 +103,10 @@ function dci_register_header_options()
         'name'        => __('Login tramite popup Opencity', 'design_comuni_italia'),
         'desc'        => __('Login tramite popup Opencity', 'design_comuni_italia'),
         'type'    => 'radio_inline',
-        'show_on'      => array('key' => $prefix . 'area_riservata_opencity', 'value' => '1'),
+        'attributes'    => array(
+            'data-conditional-id'     => $prefix.'area_riservata_opencity',
+            'data-conditional-value'  => "1",
+        ),
         'options' => array(
             'false' => __('No', 'cmb2'),
             'true'   => __('Sì', 'cmb2'),
@@ -109,6 +118,9 @@ function dci_register_header_options()
         'name'        => __('Etichetta Login Opencity', 'design_comuni_italia'),
         'desc'        => __('Etichetta Login Opencity', 'design_comuni_italia'),
         'type' => 'text',
-        'show_on'      => array('key' => $prefix . 'area_riservata_opencity', 'value' => '1'),
+        'attributes'    => array(
+            'data-conditional-id'     => $prefix.'area_riservata_opencity',
+            'data-conditional-value'  => "1",
+        ),
     ));
 }
