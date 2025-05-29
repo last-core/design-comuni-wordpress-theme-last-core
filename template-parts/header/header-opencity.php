@@ -1,8 +1,8 @@
 <?php
-$oc_base_url = dci_get_option("area_riservata_oc_base_url", "header") || '';
-$oc_auth_url = dci_get_option("area_riservata_oc_auth_url", "header") || '';
-$oc_spid_button = dci_get_option("area_riservata_oc_spid_button", "header") || 'false';
-$oc_auth_label = dci_get_option("area_riservata_oc_auth_label", "header") || '';
+$oc_base_url = dci_get_option("area_riservata_oc_base_url", "header");
+$oc_auth_url = dci_get_option("area_riservata_oc_auth_url", "header");
+$oc_spid_button = dci_get_option("area_riservata_oc_spid_button", "header");
+$oc_auth_label = dci_get_option("area_riservata_oc_auth_label", "header");
 ?>
 <div id="oc-login-box" data-element="personal-area-login"></div>
 <script>
